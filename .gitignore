@@ -1,0 +1,14 @@
+/target/
+/.classpath/
+/.settings/
+/build/
+/.gradle/
+/out/
+lombok.config
+#application-*.yml
+**/static/docs/*.html
+src/main/generated
+.idea
+*.db
+
+
