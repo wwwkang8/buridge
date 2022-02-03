@@ -1,0 +1,51 @@
+= Rest Docs Real Estate API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+== 소개
+
+부동산 중개 API
+
+== 공통 사항
+
+API에 관계없이 아래 사항을 지켜주셔야 합니다.
+
+=== Header
+
+|===
+| name | 설명
+
+|
+|
+|===
+
+=== Response Type
+
+application/json;charset=utf-8 +
+
+=== 공통 Response Body
+
+|===
+| field | Field Type| 설명
+
+| `success`
+| Boolean
+| 성공 여부
+
+| `message`
+| String
+| 메세지
+
+| `data`
+| String
+| 결과 데이터
+|===
+
+include::member.adoc[]
+
+
