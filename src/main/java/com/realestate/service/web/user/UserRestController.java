@@ -13,17 +13,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/users/")
 public class UserRestController {
 
-    @Autowired
-    UserService userService;
+  @Autowired
+  UserService userService;
 
-    @PostMapping(value="/signup")
-    public ResponseEntity<String> signup(@RequestBody User user){
+  /**.
+   * 회원가입 : 이메일, 비밀번호를 입력하면 회원가입
+   * @author Kang Jeong Ho
+   * @version 1.0
+   * */
+  @PostMapping(value = "/signup")
+  public ResponseEntity<String> signup(@RequestBody User user) {
+    //Long id = userService.signup(user);
 
-        System.out.println(user.getEmail());
-        System.out.println(user.getPassword());
+    return ResponseEntity.ok("efdf");
 
-        return ResponseEntity.ok("efdf");
-    }
+  }
 
 
 
