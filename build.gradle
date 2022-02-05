@@ -27,6 +27,7 @@ dependencies {
     implementation "com.querydsl:querydsl-sql"
     implementation "com.querydsl:querydsl-sql-spring"
     implementation "org.apache.commons:commons-lang3"
+    implementation "com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.0"
 //	runtime "org.mariadb.jdbc:mariadb-java-client"
     runtimeOnly "com.h2database:h2"
 
