@@ -18,7 +18,7 @@ public abstract class BaseDateTimeEntity {
   private LocalDateTime createdDateTime;
 
   @LastModifiedDate
-  private LocalDateTime updatedDateTime;
+  private LocalDateTime modifiedDateTime;
 
 }
 
