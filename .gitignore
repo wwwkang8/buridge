@@ -5,7 +5,7 @@
 /.gradle/
 /out/
 lombok.config
-#application-*.yml
+application-*.yml
 **/static/docs/*.html
 src/main/generated
 .idea
