@@ -16,8 +16,8 @@ import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Getter @Setter
-public class User {
+@Getter
+public class User extends BaseDateTimeEntity{
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,12 +35,6 @@ public class User {
 
   @Enumerated(EnumType.STRING)
   private Role role;
-
-  private LocalDateTime createDateTime;
-
-  private LocalDateTime modifiedDateTime;
-
-  private LocalDateTime deletedDateTime;
 
 
 }

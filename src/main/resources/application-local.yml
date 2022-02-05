@@ -2,7 +2,7 @@ spring:
   datasource:
     hikari:
       driver-class-name: org.h2.Driver
-      jdbc-url: jdbc:h2:tcp://localhost/~/buridge;DB_CLOSE_ON_EXIT=FALSE
+      jdbc-url: jdbc:h2:file:./real-estate;DB_CLOSE_ON_EXIT=FALSE
       username: sa
       password:
   jpa:
