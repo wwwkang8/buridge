@@ -1,17 +1,11 @@
-package com.realestate.service.member.entity;
+package com.realestate.service.user.entity;
 
 import javax.persistence.*;
 
 import com.realestate.service.common.entity.BaseDateTimeEntity;
-import com.realestate.service.member.constant.GenderType;
-import com.realestate.service.member.constant.Role;
-import com.realestate.service.member.constant.Status;
-import com.realestate.service.member.converter.GenderTypeConverter;
+import com.realestate.service.user.constant.Role;
+import com.realestate.service.user.constant.Status;
 import lombok.*;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
