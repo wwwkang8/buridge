@@ -10,5 +10,6 @@ lombok.config
 src/main/generated
 .idea
 *.db
+*.iml
 
 
