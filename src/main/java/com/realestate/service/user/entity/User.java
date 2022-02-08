@@ -42,5 +42,26 @@ public class User extends BaseDateTimeEntity {
   @Enumerated(EnumType.STRING)
   private Role role;
 
+  /**.
+   * User 엔티티 생성 메서드
+   * @author Kang Jeong Ho
+   * @version 1.0
+   * */
+  public static User createUser(String email,
+                                String password,
+                                String nickName,
+                                Status status,
+                                Role role) {
+    User user = User.builder()
+                    .email(email)
+                    .password(password)
+                    .nickName(nickName)
+                    .status(status)
+                    .role(role)
+                    .build();
+
+    return user;
+  }
+
 
 }
