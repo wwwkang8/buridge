@@ -9,21 +9,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.realestate.service.common.entity.BaseDateTimeEntity;
+
 import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Getter
+@Builder
 public class User extends BaseDateTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "user_id")
   private Long id;
 
   private String email;
@@ -37,6 +41,27 @@ public class User extends BaseDateTimeEntity {
 
   @Enumerated(EnumType.STRING)
   private Role role;
+
+  /**.
+   * User 엔티티 생성 메서드
+   * @author Kang Jeong Ho
+   * @version 1.0
+   * */
+  public static User createUser(String email,
+                                String password,
+                                String nickName,
+                                Status status,
+                                Role role) {
+    User user = User.builder()
+                    .email(email)
+                    .password(password)
+                    .nickName(nickName)
+                    .status(status)
+                    .role(role)
+                    .build();
+
+    return user;
+  }
 
 
 }
