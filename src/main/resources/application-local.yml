@@ -15,6 +15,8 @@ spring:
         format_sql: true
         use_sql_comments: true
     database-platform: org.hibernate.dialect.H2Dialect
+  sendgrid:
+    api-key: sendgrid에서 발급받은 키
 
 logging:
   level:

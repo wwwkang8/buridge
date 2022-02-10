@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import com.realestate.service.common.entity.BaseDateTimeEntity;
-
 import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
 import lombok.AccessLevel;
@@ -30,11 +29,14 @@ public class User extends BaseDateTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @Column(unique = true)
   private String email;
 
   private String password;
 
   private String nickName;
+
+  private int validationCode;
 
   @Enumerated(EnumType.STRING)
   private Status status;
@@ -61,6 +63,10 @@ public class User extends BaseDateTimeEntity {
                     .build();
 
     return user;
+  }
+
+  public void updateUserValidationCode(int secretCode) {
+    this.validationCode = secretCode;
   }
 
 
