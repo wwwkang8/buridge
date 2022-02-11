@@ -40,7 +40,7 @@ public class PropertyImage {
    * 확장자.
    */
   @Convert(converter = MimeTypeConverter.class)
-  private MimeType mineType;
+  private MimeType mimeType;
 
   private String hash;
 
@@ -62,14 +62,14 @@ public class PropertyImage {
   @Builder
   public PropertyImage(Property property,
                        String originalFileName,
-                       MimeType mineType,
+                       MimeType mimeType,
                        String hash,
                        String path,
                        int size,
                        String host) {
     this.property = property;
     this.originalFileName = originalFileName;
-    this.mineType = mineType;
+    this.mimeType = mimeType;
     this.hash = hash;
     this.path = path;
     this.size = size;

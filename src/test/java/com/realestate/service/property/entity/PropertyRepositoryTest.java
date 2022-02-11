@@ -162,7 +162,7 @@ class PropertyRepositoryTest {
             .originalFileName(givenOriginalFileName)
             .hash(givenHash)
             .host(givenHost)
-            .mineType(MimeType.JPEG)
+            .mimeType(MimeType.JPEG)
             .path(givenPath)
             .size(givenSize)
             .property(givenProperty)
