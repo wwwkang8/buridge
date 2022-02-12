@@ -22,7 +22,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @Slf4j
 @RestControllerAdvice(
-        basePackages = {"com.realestate.service"}
+    basePackages = {"com.realestate.service"}
 )
 public class CustomResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 
@@ -31,51 +31,51 @@ public class CustomResponseBodyAdvice implements ResponseBodyAdvice<Object> {
                           Class<? extends HttpMessageConverter<?>> converterType) {
 
     Type type = GenericTypeResolver.resolveType(this.getGenericType(returnType),
-          returnType.getContainingClass());
+        returnType.getContainingClass());
 
     if (Void.class.getName().equals(type.getTypeName())) {
       return false;
     } else {
       return !converterType.isAssignableFrom(ByteArrayHttpMessageConverter.class)
-                  && !converterType.isAssignableFrom(ResourceHttpMessageConverter.class);
+          && !converterType.isAssignableFrom(ResourceHttpMessageConverter.class);
     }
   }
 
 
   @Override
   public Object beforeBodyWrite(
-          Object body,
-          MethodParameter returnType,
-          MediaType selectedContentType,
-          Class<? extends HttpMessageConverter<?>> selectedConverterType,
-          ServerHttpRequest request, ServerHttpResponse response) {
+      Object body,
+      MethodParameter returnType,
+      MediaType selectedContentType,
+      Class<? extends HttpMessageConverter<?>> selectedConverterType,
+      ServerHttpRequest request, ServerHttpResponse response) {
     if (body instanceof ErrorResponse) {
       ErrorResponse errorResponse = (ErrorResponse)body;
       response.setStatusCode(errorResponse.getStatus());
       return ApiResponseModel.builder()
-              .success(false)
-              .message(errorResponse.getMessage())
-              .data(null)
-              .build();
+          .success(false)
+          .message(errorResponse.getMessage())
+          .data(null)
+          .build();
     } else {
       return ApiResponseModel.builder()
-              .success(true)
-              .message(null)
-              .data(body)
-              .build();
+          .success(true)
+          .message(null)
+          .data(body)
+          .build();
     }
   }
 
   private HttpStatus getStatus(ServerHttpResponse serverHttpResponse) {
     return HttpStatus.valueOf(
-            ((ServletServerHttpResponse)serverHttpResponse).getServletResponse().getStatus()
+        ((ServletServerHttpResponse)serverHttpResponse).getServletResponse().getStatus()
     );
   }
 
   private Type getGenericType(MethodParameter returnType) {
     return HttpEntity.class
-            .isAssignableFrom(returnType.getParameterType()) ? ResolvableType
-            .forType(returnType.getGenericParameterType())
-            .getGeneric(new int[0]).getType() : returnType.getGenericParameterType();
+        .isAssignableFrom(returnType.getParameterType()) ? ResolvableType
+        .forType(returnType.getGenericParameterType())
+        .getGeneric(new int[0]).getType() : returnType.getGenericParameterType();
   }
 }

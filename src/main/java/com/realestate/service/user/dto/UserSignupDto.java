@@ -31,8 +31,6 @@ public class UserSignupDto {
 
   /**.
    * 회원빌 : User 엔티티를 생성하기 위한 빌더함수
-   * @author Kang Jeong Ho
-   * @version 1.0
    * */
   public User toUserEntity(UserSignupDto userSignupDto) {
     User user = User.builder()
