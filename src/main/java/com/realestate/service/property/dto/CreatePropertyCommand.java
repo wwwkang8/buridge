@@ -2,6 +2,7 @@ package com.realestate.service.property.dto;
 
 import java.time.LocalDate;
 
+import com.realestate.service.property.address.entity.PropertyAddress;
 import com.realestate.service.property.constant.ResidentialType;
 import com.realestate.service.property.constant.StructureType;
 import com.realestate.service.property.entity.Property;
@@ -14,56 +15,116 @@ import lombok.Getter;
 
 @Getter
 public class CreatePropertyCommand {
+
   private final long userId;
-  private final String title;
-  private final String content;
-  private final int area;
-  private final StructureType structureType;
-  private final Long sellPrice;
-  private final Long deposit;
-  private final Integer monthlyPrice;
-  private final Integer adminPrice;
-  private final ResidentialType residentialType;
-  private final int floor;
-  private final int topFloor;
-  private final Boolean availableParking;
-  private final LocalDate moveInDate;
-  private final LocalDate estDate;
+  private final PropertyInformationCommand propertyInformationCommand;
+  private final PropertyAddressCommand propertyAddressCommand;
 
   /**
    * CreatePropertyCommand 를 생성하여 리턴합니다.
    */
-  @Builder
   public CreatePropertyCommand(long userId,
-                               String title,
-                               String content,
-                               int area,
-                               StructureType structureType,
-                               Long sellPrice,
-                               Long deposit,
-                               Integer monthlyPrice,
-                               Integer adminPrice,
-                               ResidentialType residentialType,
-                               int floor,
-                               int topFloor,
-                               Boolean availableParking,
-                               LocalDate moveInDate,
-                               LocalDate estDate) {
+                               PropertyInformationCommand propertyInformationCommand,
+                               PropertyAddressCommand propertyAddressCommand) {
     this.userId = userId;
-    this.title = title;
-    this.content = content;
-    this.area = area;
-    this.structureType = structureType;
-    this.sellPrice = sellPrice;
-    this.deposit = deposit;
-    this.monthlyPrice = monthlyPrice;
-    this.adminPrice = adminPrice;
-    this.residentialType = residentialType;
-    this.floor = floor;
-    this.topFloor = topFloor;
-    this.availableParking = availableParking;
-    this.moveInDate = moveInDate;
-    this.estDate = estDate;
+    this.propertyInformationCommand = propertyInformationCommand;
+    this.propertyAddressCommand = propertyAddressCommand;
+  }
+
+  @Getter
+  public static class PropertyInformationCommand {
+    private final String title;
+    private final String content;
+    private final int area;
+    private final StructureType structureType;
+    private final Long sellPrice;
+    private final Long deposit;
+    private final Integer monthlyPrice;
+    private final Integer adminPrice;
+    private final ResidentialType residentialType;
+    private final int floor;
+    private final int topFloor;
+    private final Boolean availableParking;
+    private final LocalDate moveInDate;
+    private final LocalDate estDate;
+
+    /**
+     * PropertyInformationCommand 를 생성하여 리턴합니다.
+     */
+    @Builder
+    public PropertyInformationCommand(String title,
+                                      String content,
+                                      int area,
+                                      StructureType structureType,
+                                      Long sellPrice,
+                                      Long deposit,
+                                      Integer monthlyPrice,
+                                      Integer adminPrice,
+                                      ResidentialType residentialType,
+                                      int floor,
+                                      int topFloor,
+                                      Boolean availableParking,
+                                      LocalDate moveInDate,
+                                      LocalDate estDate) {
+      this.title = title;
+      this.content = content;
+      this.area = area;
+      this.structureType = structureType;
+      this.sellPrice = sellPrice;
+      this.deposit = deposit;
+      this.monthlyPrice = monthlyPrice;
+      this.adminPrice = adminPrice;
+      this.residentialType = residentialType;
+      this.floor = floor;
+      this.topFloor = topFloor;
+      this.availableParking = availableParking;
+      this.moveInDate = moveInDate;
+      this.estDate = estDate;
+    }
+  }
+
+  @Getter
+  public static class PropertyAddressCommand {
+    private final String city;
+    private final String address;
+    private final String roadAddress;
+    private final String zipcode;
+    private final double latitude;
+    private final double longitude;
+
+    /**
+     * PropertyAddressCommand 를 생성하여 리턴합니다.
+     */
+    @Builder
+    public PropertyAddressCommand(String city,
+                                  String address,
+                                  String roadAddress,
+                                  String zipcode,
+                                  double latitude,
+                                  double longitude) {
+      this.city = city;
+      this.address = address;
+      this.roadAddress = roadAddress;
+      this.zipcode = zipcode;
+      this.latitude = latitude;
+      this.longitude = longitude;
+    }
+  }
+
+
+  /**
+   * 매물 주소 엔티티를 반환합니다.
+   */
+  public PropertyAddress toEntity(Property property) {
+    return PropertyAddress.builder()
+        .property(property)
+        .city(propertyAddressCommand.getCity())
+        .address(propertyAddressCommand.getAddress())
+        .roadAddress(propertyAddressCommand.getRoadAddress())
+        .zipcode(propertyAddressCommand.getZipcode())
+        .latitude(propertyAddressCommand.getLatitude())
+        .longitude(propertyAddressCommand.getLongitude())
+        .build();
   }
 
   /**
@@ -72,8 +133,8 @@ public class CreatePropertyCommand {
   public Property toEntity(User user) {
     return Property.builder()
         .user(user)
-        .title(title)
-        .content(content)
+        .title(propertyInformationCommand.getTitle())
+        .content(propertyInformationCommand.getContent())
         .propertyInformation(createPropertyInformation())
         .build();
   }
@@ -82,25 +143,27 @@ public class CreatePropertyCommand {
     return PropertyInformation.builder()
         .propertyPrice(createPropertyPrice())
         .propertyFloor(createPropertyFloor())
-        .structureType(structureType)
-        .availableParking(availableParking)
-        .moveInDate(moveInDate)
-        .estDate(estDate)
-        .area(area)
-        .residentialType(residentialType)
+        .structureType(propertyInformationCommand.getStructureType())
+        .availableParking(propertyInformationCommand.getAvailableParking())
+        .moveInDate(propertyInformationCommand.getMoveInDate())
+        .estDate(propertyInformationCommand.getEstDate())
+        .area(propertyInformationCommand.getArea())
+        .residentialType(propertyInformationCommand.getResidentialType())
         .build();
   }
 
   private PropertyPrice createPropertyPrice() {
     return PropertyPrice.builder()
-        .adminPrice(adminPrice)
-        .monthlyPrice(monthlyPrice)
-        .deposit(deposit)
-        .sellPrice(sellPrice)
+        .adminPrice(propertyInformationCommand.getAdminPrice())
+        .monthlyPrice(propertyInformationCommand.getMonthlyPrice())
+        .deposit(propertyInformationCommand.getDeposit())
+        .sellPrice(propertyInformationCommand.getSellPrice())
         .build();
   }
 
   private PropertyFloor createPropertyFloor() {
-    return new PropertyFloor(floor, topFloor);
+    return new PropertyFloor(propertyInformationCommand.getFloor(),
+        propertyInformationCommand.getTopFloor());
   }
+
 }
