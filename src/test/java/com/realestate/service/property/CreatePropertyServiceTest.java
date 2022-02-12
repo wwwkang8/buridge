@@ -5,16 +5,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
+import com.realestate.service.property.address.entity.PropertyAddressRepository;
 import com.realestate.service.property.constant.ResidentialType;
 import com.realestate.service.property.constant.StructureType;
 import com.realestate.service.property.dto.CreatePropertyCommand;
 import com.realestate.service.property.entity.Property;
 import com.realestate.service.property.entity.PropertyRepository;
-import com.realestate.service.user.entity.User;
 import com.realestate.service.user.repository.UserRepository;
+import java.time.LocalDate;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -39,15 +38,22 @@ class CreatePropertyServiceTest {
   @Mock
   PropertyRepository propertyRepository;
 
+  @Mock
+  PropertyAddressRepository propertyAddressRepository;
+
   @BeforeEach
   void setUp() {
-    User savedUser = userRepository.save(helper.savedUser());
+    var savedUser = userRepository.save(helper.savedUser());
+    var savedProperty = helper.createdProperty(savedUser);
 
     given(userRepository.findById(anyLong()))
         .willReturn(Optional.of(helper.savedUser()));
 
     given(propertyRepository.save(any()))
-        .willReturn(helper.createdProperty(savedUser));
+        .willReturn(savedProperty);
+
+    given(propertyAddressRepository.save(any()))
+        .willReturn(helper.createdPropertyAddress(savedProperty));
   }
 
   @Nested
@@ -63,10 +69,15 @@ class CreatePropertyServiceTest {
     final int givenTopFloor = 4;
     final String givenTitle = "testTitle";
     final String givenContent = "test";
+    final String givenCity = "givenCity";
+    final String givenAddress = "givenAddress";
+    final String givenRoadAddress = "givenRoadAddress";
+    final double givenLatitude = 126.917885535023d;
+    final double givenLongitude = 37.5280674292228d;
+
 
     private CreatePropertyCommand subject() {
-      return CreatePropertyCommand.builder()
-          .userId(givenUserId)
+      var informationCommand = CreatePropertyCommand.PropertyInformationCommand.builder()
           .title(givenTitle)
           .content(givenContent)
           .area(givenArea)
@@ -82,6 +93,18 @@ class CreatePropertyServiceTest {
           .floor(givenFloor)
           .topFloor(givenTopFloor)
           .build();
+
+
+      var addressCommand = CreatePropertyCommand.PropertyAddressCommand.builder()
+          .city(givenCity)
+          .address(givenAddress)
+          .roadAddress(givenRoadAddress)
+          .latitude(givenLatitude)
+          .longitude(givenLongitude)
+          .build();
+
+
+      return new CreatePropertyCommand(givenUserId, informationCommand, addressCommand);
     }
 
     @Nested

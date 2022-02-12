@@ -3,6 +3,7 @@ package com.realestate.service.property;
 import static com.realestate.service.property.constant.ResidentialType.APARTMENT;
 import static com.realestate.service.property.constant.StructureType.TREE_ROOM;
 
+import com.realestate.service.property.address.entity.PropertyAddress;
 import java.time.LocalDate;
 
 import com.realestate.service.property.entity.Property;
@@ -27,6 +28,12 @@ public class PropertyServiceHelper {
   final int givenTopFloor = 4;
   final String givenTitle = "testTitle";
   final String givenContent = "test";
+
+  final String givenCity = "givenCity";
+  final String givenAddress = "givenAddress";
+  final String givenRoadAddress = "givenRoadAddress";
+  final double givenLatitude = 126.917885535023d;
+  final double givenLongitude = 37.5280674292228d;
 
   protected User savedUser() {
     return User.createUser(
@@ -63,4 +70,16 @@ public class PropertyServiceHelper {
         .propertyInformation(givenPropertyInformation)
         .build();
   }
+
+  protected PropertyAddress createdPropertyAddress(Property property) {
+    return PropertyAddress.builder()
+        .property(property)
+        .city(givenCity)
+        .address(givenAddress)
+        .roadAddress(givenRoadAddress)
+        .latitude(givenLatitude)
+        .longitude(givenLongitude)
+        .build();
+  }
+
 }
