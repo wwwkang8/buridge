@@ -1,5 +1,6 @@
 package com.realestate.service.property;
 
+import com.realestate.service.property.address.entity.PropertyAddressRepository;
 import com.realestate.service.property.dto.CreatePropertyCommand;
 import com.realestate.service.property.entity.Property;
 import com.realestate.service.property.entity.PropertyRepository;
@@ -14,13 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreatePropertyService implements CreatePropertyUseCase {
 
   private final PropertyRepository propertyRepository;
+  private final PropertyAddressRepository propertyAddressRepository;
   private final UserRepository userRepository;
 
   @Transactional
   @Override
   public Property create(CreatePropertyCommand command) {
     User findUser = findUserById(command.getUserId());
-    return propertyRepository.save(command.toEntity(findUser));
+    Property savedProperty = propertyRepository.save(command.toEntity(findUser));
+    propertyAddressRepository.save(command.toEntity(savedProperty));
+    return savedProperty;
   }
 
   private User findUserById(long userId) {
