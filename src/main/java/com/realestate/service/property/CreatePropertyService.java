@@ -23,7 +23,7 @@ public class CreatePropertyService implements CreatePropertyUseCase {
   public Property create(CreatePropertyCommand command) {
     User findUser = findUserById(command.getUserId());
     Property savedProperty = propertyRepository.save(command.toEntity(findUser));
-    propertyAddressRepository.save(command.toEntity(savedProperty));
+    propertyAddressRepository.save(command.toAddressEntity(savedProperty));
     return savedProperty;
   }
 

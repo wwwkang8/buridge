@@ -115,7 +115,7 @@ public class CreatePropertyCommand {
   /**
    * 매물 주소 엔티티를 반환합니다.
    */
-  public PropertyAddress toEntity(Property property) {
+  public PropertyAddress toAddressEntity(Property property) {
     return PropertyAddress.builder()
         .property(property)
         .city(propertyAddressCommand.getCity())
