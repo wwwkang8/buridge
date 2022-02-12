@@ -46,8 +46,6 @@ public class User extends BaseDateTimeEntity {
 
   /**.
    * User 엔티티 생성 메서드
-   * @author Kang Jeong Ho
-   * @version 1.0
    * */
   public static User createUser(String email,
                                 String password,
