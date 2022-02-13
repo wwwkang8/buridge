@@ -1,0 +1,26 @@
+{
+  "title": "createTestSubject",
+  "content": "createTestContents",
+  "information" : {
+    "area": 1234,
+    "structureType": "ONE_ROOM",
+    "sellPrice": 300000000,
+    "deposit": 10000000,
+    "monthlyPrice" : 250000000,
+    "adminPrice" : 250000,
+    "residentialType" : "APARTMENT",
+    "floor" : 2,
+    "topFloor" : 15,
+    "availableParking" : true,
+    "moveInDate" : "2021-10-25",
+    "estDate" : "2021-10-25"
+  },
+  "address" : {
+    "city" : "서울",
+    "address" : "서울특별시 서대문구 xxx동 xx호",
+    "roadAddress" : "서울특별시 서대문구 xxx로 11가길",
+    "zipcode" : "01185",
+    "latitude" : 126.917885535023,
+    "longitude" : 37.5280674292228
+  }
+}
