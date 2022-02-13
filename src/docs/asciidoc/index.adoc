@@ -48,4 +48,6 @@ application/json;charset=utf-8 +
 
 include::member.adoc[]
 
+include::property.adoc[]
+
 
