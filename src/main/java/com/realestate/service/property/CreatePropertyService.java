@@ -18,6 +18,13 @@ public class CreatePropertyService implements CreatePropertyUseCase {
   private final PropertyAddressRepository propertyAddressRepository;
   private final UserRepository userRepository;
 
+  /**
+   * 매물 정보로 매물을 등록하고 반환합니다.
+   *
+   * @param command 등록할 매물 정보
+   * @return 등록된 매물
+   * @throws IllegalArgumentException 회원 식별자로 회원 정보를 찾을 수 없을 경우
+   */
   @Transactional
   @Override
   public Property create(CreatePropertyCommand command) {

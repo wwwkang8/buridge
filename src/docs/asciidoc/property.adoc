@@ -1,0 +1,29 @@
+= 매물 정보 API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+== 소개
+
+매물 정보 API
+
+== 매물 공통 필드값
+
+include::property-enums.adoc[]
+
+:path: {snippets}/properties
+
+== 매물 등록
+
+==== HTTP Request
+include::{path}/create/http-request.adoc[]
+
+=== 응답 페이로드
+include::{path}/create/response-fields-data.adoc[]
+
+=== 응답 샘플
+include::{path}/create/http-response.adoc[]
