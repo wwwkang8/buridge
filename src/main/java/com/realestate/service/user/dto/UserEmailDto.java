@@ -4,12 +4,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserEmailDto {
 
   @NotBlank(message = "이메일 입력은 필수입니다.")
@@ -17,6 +19,11 @@ public class UserEmailDto {
   private String email;
 
   private String password;
+
+
+  public UserEmailDto(String email) {
+    this.email = email;
+  }
 
 
 }

@@ -6,7 +6,6 @@ import javax.validation.constraints.NotBlank;
 import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
 import com.realestate.service.user.entity.User;
-import jdk.jshell.Snippet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,8 +28,20 @@ public class UserSignupDto {
   private String status;
   private String role;
 
+
   /**.
-   * 회원빌 : User 엔티티를 생성하기 위한 빌더함수
+   * 생성자 : UserSignupDto를 생성하기 위한 빌더함수
+   * */
+  public UserSignupDto(String email, String password, String nickName) {
+    this.email = email;
+    this.password = password;
+    this.nickName = nickName;
+  }
+
+
+
+  /**.
+   * 회원빌드 : User 엔티티를 생성하기 위한 빌더함수
    * */
   public User toUserEntity(UserSignupDto userSignupDto) {
     User user = User.builder()

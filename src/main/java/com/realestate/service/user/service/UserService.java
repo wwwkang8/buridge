@@ -1,7 +1,6 @@
 package com.realestate.service.user.service;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.Random;
 
 import com.realestate.service.user.constant.Role;
@@ -18,11 +17,8 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +47,7 @@ public class UserService {
     // 비밀번호 암호화 처리
     String encodedPassword = passwordEncoder.encode(userSignupDto.getPassword());
 
-    log.info("암호화된 비밀번호 : "+encodedPassword);
+    log.info("암호화된 비밀번호 : " + encodedPassword);
 
 
     //User 객체 빌드하기
@@ -62,6 +58,12 @@ public class UserService {
         .status(Status.ACTIVE)
         .role(Role.NORMAL)
         .build();
+
+    log.info("User 이메일 : " + user.getEmail());
+    log.info("User 비밀번호 : " + encodedPassword);
+    log.info("User 닉네임 : " + user.getNickName());
+    log.info("User 상태 : " + user.getStatus());
+    log.info("User 권한 : " + user.getRole());
 
 
     userRepository.save(user);
@@ -87,7 +89,7 @@ public class UserService {
 
     /** 6자리 난수 발생 */
     Random random = new Random();
-    int secretCode = random.nextInt(999999);
+    int secretCode = random.nextInt(1000000);
 
     /** 이메일로 사용자 조회 */
     User user = userRepository.findUserByEmail(userEmailDto.getEmail())
