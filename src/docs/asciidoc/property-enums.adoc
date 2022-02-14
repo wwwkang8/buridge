@@ -1,0 +1,45 @@
+[[ResidentialType]]
+==== ResidentialType
+
+|===
+|필드 값 |설명
+
+|HOUSING
+|주택
+
+|OFFICE_HOTEL
+|오피스텔
+
+|APARTMENT
+|아파트
+
+|OFFICE
+|사무실
+
+|STORE
+|상가
+
+|===
+
+[[StructureType]]
+==== StructureType
+
+|===
+|필드 값 |설명
+
+|ONE_ROOM
+|원룸
+
+|TWO_ROOM
+|방 2개
+
+|TREE_ROOM
+|방 3개
+
+|MORE_THAN_FOUR_ROOM
+|방 4개 이상
+
+|DUPLEX
+|복층
+|===
+
