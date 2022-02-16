@@ -90,7 +90,7 @@ class CreatePropertyServiceTest {
           .sellPrice(givenSellPrice)
           .monthlyPrice(givenMonthlyPrice)
           .residentialType(ResidentialType.APARTMENT)
-          .structureType(StructureType.TREE_ROOM)
+          .structureType(StructureType.THREE_ROOM)
           .contractType(ContractType.SALE)
           .floor(givenFloor)
           .topFloor(givenTopFloor)
