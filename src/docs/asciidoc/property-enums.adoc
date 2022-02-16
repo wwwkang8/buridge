@@ -52,7 +52,7 @@
 |SALE
 |매매
 
-|LARGE_DEPOSIT
+|JEONSE
 |전세
 
 |MONTHLY_LEASE

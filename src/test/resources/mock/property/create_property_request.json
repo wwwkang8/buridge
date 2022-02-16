@@ -4,7 +4,7 @@
   "information" : {
     "area": 1234,
     "structureType": "ONE_ROOM",
-    "contractType": "LARGE_DEPOSIT",
+    "contractType": "JEONSE",
     "sellPrice": 300000000,
     "deposit": 10000000,
     "monthlyPrice" : 250000000,

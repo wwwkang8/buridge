@@ -2,12 +2,11 @@ package com.realestate.service.web.property;
 
 import static com.realestate.service.property.constant.ContractType.*;
 import static com.realestate.service.property.constant.ResidentialType.APARTMENT;
-import static com.realestate.service.property.constant.StructureType.TREE_ROOM;
+import static com.realestate.service.property.constant.StructureType.THREE_ROOM;
 import static org.springframework.util.ResourceUtils.CLASSPATH_URL_PREFIX;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.realestate.service.property.constant.ContractType;
 import com.realestate.service.property.entity.Property;
 import com.realestate.service.property.entity.PropertyFloor;
 import com.realestate.service.property.entity.PropertyInformation;
@@ -70,8 +69,8 @@ public class PropertyMockHelper {
         .propertyFloor(new PropertyFloor(givenFloor, givenTopFloor))
         .availableParking(true)
         .residentialType(APARTMENT)
-        .structureType(TREE_ROOM)
-        .contractType(LARGE_DEPOSIT)
+        .structureType(THREE_ROOM)
+        .contractType(JEONSE)
         .build();
 
     return Property.builder()

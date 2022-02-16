@@ -11,7 +11,7 @@ public enum ContractType {
   /**
    * 전세.
    */
-  LARGE_DEPOSIT,
+  JEONSE,
   /**
    * 월세.
    */
