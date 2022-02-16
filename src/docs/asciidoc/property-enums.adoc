@@ -43,3 +43,19 @@
 |복층
 |===
 
+[[ContractType]]
+==== ContractType
+
+|===
+|필드 값 |설명
+
+|SALE
+|매매
+
+|LARGE_DEPOSIT
+|전세
+
+|MONTHLY_LEASE
+|월세
+|===
+
