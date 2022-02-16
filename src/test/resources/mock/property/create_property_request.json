@@ -4,6 +4,7 @@
   "information" : {
     "area": 1234,
     "structureType": "ONE_ROOM",
+    "contractType": "LARGE_DEPOSIT",
     "sellPrice": 300000000,
     "deposit": 10000000,
     "monthlyPrice" : 250000000,
@@ -13,7 +14,7 @@
     "topFloor" : 15,
     "availableParking" : true,
     "moveInDate" : "2021-10-25",
-    "estDate" : "2021-10-25"
+    "completionDate" : "2021-10-25"
   },
   "address" : {
     "city" : "서울",

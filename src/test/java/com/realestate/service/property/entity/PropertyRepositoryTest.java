@@ -1,5 +1,6 @@
 package com.realestate.service.property.entity;
 
+import static com.realestate.service.property.constant.ContractType.*;
 import static com.realestate.service.property.constant.ResidentialType.APARTMENT;
 import static com.realestate.service.property.constant.StructureType.TREE_ROOM;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -7,6 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.realestate.service.config.TestConfig;
 import com.realestate.service.property.address.entity.PropertyAddress;
 import com.realestate.service.property.address.entity.PropertyAddressRepository;
+import com.realestate.service.property.constant.ContractType;
 import com.realestate.service.property.image.constant.MimeType;
 import com.realestate.service.property.image.entity.PropertyImage;
 import com.realestate.service.property.image.entity.PropertyImageRepository;
@@ -88,13 +90,14 @@ class PropertyRepositoryTest {
 
       var givenPropertyInformation = PropertyInformation.builder()
           .area(givenArea)
-          .estDate(LocalDate.now())
+          .completionDate(LocalDate.now())
           .moveInDate(LocalDate.now())
           .propertyPrice(givenPropertyPrice)
           .propertyFloor(new PropertyFloor(givenFloor, givenTopFloor))
           .availableParking(true)
           .residentialType(APARTMENT)
           .structureType(TREE_ROOM)
+          .contractType(LARGE_DEPOSIT)
           .build();
 
       return Property.builder()
@@ -124,6 +127,7 @@ class PropertyRepositoryTest {
         assertThat(savedProperty.getContent()).isEqualTo(givenContent);
         assertThat(savedProperty.getCreatedDateTime()).isBefore(LocalDateTime.now());
         assertThat(savedProperty.getPropertyInformation().getArea()).isEqualTo(givenArea);
+        assertThat(savedProperty.getPropertyInformation().getContractType()).isEqualTo(LARGE_DEPOSIT);
         assertThat(savedProperty.getPropertyInformation().getPropertyPrice().getSellPrice()).isEqualTo(givenSellPrice);
         assertThat(savedProperty.getPropertyInformation().getPropertyFloor().getTopFloor()).isEqualTo(givenTopFloor);
       }
