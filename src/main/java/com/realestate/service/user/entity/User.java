@@ -53,12 +53,12 @@ public class User extends BaseDateTimeEntity {
                                 Status status,
                                 Role role) {
     User user = User.builder()
-                    .email(email)
-                    .password(password)
-                    .nickName(nickName)
-                    .status(status)
-                    .role(role)
-                    .build();
+        .email(email)
+        .password(password)
+        .nickName(nickName)
+        .status(status)
+        .role(role)
+        .build();
 
     return user;
   }

@@ -25,6 +25,11 @@ import org.springframework.test.context.ActiveProfiles;
 @Slf4j
 public class UserRepositoryTest {
 
+  /**
+   * 테스트 작성시 도움이 되는 링크 : https://kim-solshar.tistory.com/62?category=801655
+   * */
+
+  // UserRepository는 실제 DB에 저장하고, 조회해야 하므로 Mock 객체가 아닌 실제 객체를 주입받아야함.
   @Autowired
   UserRepository userRepository;
 

@@ -7,6 +7,7 @@ import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
 import com.realestate.service.user.entity.User;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -14,6 +15,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class UserSignupDto {
 
   @NotBlank(message = "이메일 입력은 필수입니다.")
