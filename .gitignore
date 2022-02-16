@@ -11,5 +11,6 @@ src/main/generated
 .idea
 *.db
 *.iml
+spy.log
 
 
