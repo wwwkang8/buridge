@@ -3,6 +3,7 @@ package com.realestate.service.property.dto;
 import java.time.LocalDate;
 
 import com.realestate.service.property.address.entity.PropertyAddress;
+import com.realestate.service.property.constant.ContractType;
 import com.realestate.service.property.constant.ResidentialType;
 import com.realestate.service.property.constant.StructureType;
 import com.realestate.service.property.entity.Property;
@@ -37,6 +38,7 @@ public class CreatePropertyCommand {
     private final String content;
     private final int area;
     private final StructureType structureType;
+    private final ContractType contractType;
     private final Long sellPrice;
     private final Long deposit;
     private final Integer monthlyPrice;
@@ -46,7 +48,7 @@ public class CreatePropertyCommand {
     private final int topFloor;
     private final Boolean availableParking;
     private final LocalDate moveInDate;
-    private final LocalDate estDate;
+    private final LocalDate completionDate;
 
     /**
      * PropertyInformationCommand 를 생성하여 리턴합니다.
@@ -56,6 +58,7 @@ public class CreatePropertyCommand {
                                       String content,
                                       int area,
                                       StructureType structureType,
+                                      ContractType contractType,
                                       Long sellPrice,
                                       Long deposit,
                                       Integer monthlyPrice,
@@ -65,11 +68,12 @@ public class CreatePropertyCommand {
                                       int topFloor,
                                       Boolean availableParking,
                                       LocalDate moveInDate,
-                                      LocalDate estDate) {
+                                      LocalDate completionDate) {
       this.title = title;
       this.content = content;
       this.area = area;
       this.structureType = structureType;
+      this.contractType = contractType;
       this.sellPrice = sellPrice;
       this.deposit = deposit;
       this.monthlyPrice = monthlyPrice;
@@ -79,7 +83,7 @@ public class CreatePropertyCommand {
       this.topFloor = topFloor;
       this.availableParking = availableParking;
       this.moveInDate = moveInDate;
-      this.estDate = estDate;
+      this.completionDate = completionDate;
     }
   }
 
@@ -144,9 +148,10 @@ public class CreatePropertyCommand {
         .propertyPrice(createPropertyPrice())
         .propertyFloor(createPropertyFloor())
         .structureType(propertyInformationCommand.getStructureType())
+        .contractType(propertyInformationCommand.getContractType())
         .availableParking(propertyInformationCommand.getAvailableParking())
         .moveInDate(propertyInformationCommand.getMoveInDate())
-        .estDate(propertyInformationCommand.getEstDate())
+        .completionDate(propertyInformationCommand.getCompletionDate())
         .area(propertyInformationCommand.getArea())
         .residentialType(propertyInformationCommand.getResidentialType())
         .build();

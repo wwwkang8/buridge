@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.realestate.service.common.time.DatePattern;
+import com.realestate.service.property.constant.ContractType;
 import com.realestate.service.property.constant.ResidentialType;
 import com.realestate.service.property.constant.StructureType;
 import com.realestate.service.property.dto.CreatePropertyCommand;
@@ -47,6 +48,8 @@ public class CreatePropertyRequest {
     private int area;
     @NotNull(message = "매물 구조 타입은 필수 입력입니다.")
     private StructureType structureType;
+    @NotNull(message = "매물 계약 타입은 필수 입력입니다.")
+    private ContractType contractType;
     private Long sellPrice;
     private Long deposit;
     private Integer monthlyPrice;
@@ -60,7 +63,7 @@ public class CreatePropertyRequest {
     @JsonFormat(pattern = DatePattern.DEFAULT_DATE)
     private LocalDate moveInDate;
     @JsonFormat(pattern = DatePattern.DEFAULT_DATE)
-    private LocalDate estDate;
+    private LocalDate completionDate;
   }
 
 
@@ -74,6 +77,7 @@ public class CreatePropertyRequest {
         .content(content)
         .area(information.getArea())
         .structureType(information.getStructureType())
+        .contractType(information.getContractType())
         .sellPrice(information.getSellPrice())
         .deposit(information.getDeposit())
         .monthlyPrice(information.getMonthlyPrice())
@@ -83,7 +87,7 @@ public class CreatePropertyRequest {
         .topFloor(information.getTopFloor())
         .availableParking(information.getAvailableParking())
         .moveInDate(information.getMoveInDate())
-        .estDate(information.getEstDate())
+        .completionDate(information.getCompletionDate())
         .build();
 
     var addressCommand = CreatePropertyCommand

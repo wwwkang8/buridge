@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 public enum StructureType {
   ONE_ROOM("원룸"),
   TWO_ROOM("방 2개"),
-  TREE_ROOM("방 3개"),
+  THREE_ROOM("방 3개"),
   MORE_THAN_FOUR_ROOM("방 4개 이상"),
   DUPLEX("복층"),
   ;

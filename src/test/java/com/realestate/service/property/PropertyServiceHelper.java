@@ -1,7 +1,8 @@
 package com.realestate.service.property;
 
+import static com.realestate.service.property.constant.ContractType.*;
 import static com.realestate.service.property.constant.ResidentialType.APARTMENT;
-import static com.realestate.service.property.constant.StructureType.TREE_ROOM;
+import static com.realestate.service.property.constant.StructureType.THREE_ROOM;
 
 import com.realestate.service.property.address.entity.PropertyAddress;
 import java.time.LocalDate;
@@ -54,13 +55,14 @@ public class PropertyServiceHelper {
 
     var givenPropertyInformation = PropertyInformation.builder()
         .area(givenArea)
-        .estDate(LocalDate.now())
+        .completionDate(LocalDate.now())
         .moveInDate(LocalDate.now())
         .propertyPrice(givenPropertyPrice)
         .propertyFloor(new PropertyFloor(givenFloor, givenTopFloor))
         .availableParking(true)
         .residentialType(APARTMENT)
-        .structureType(TREE_ROOM)
+        .structureType(THREE_ROOM)
+        .contractType(SALE)
         .build();
 
     return Property.builder()

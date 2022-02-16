@@ -8,6 +8,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import com.realestate.service.common.converter.BooleanToNumberOneZeroTypeCodeConverter;
+import com.realestate.service.property.constant.ContractType;
 import com.realestate.service.property.constant.ResidentialType;
 import com.realestate.service.property.constant.StructureType;
 import lombok.AccessLevel;
@@ -29,6 +30,11 @@ public class PropertyInformation {
   @Enumerated(EnumType.STRING)
   private StructureType structureType;
   /**
+   * 거래 타입.
+   */
+  @Enumerated(EnumType.STRING)
+  private ContractType contractType;
+  /**
    * 매물 가격 정보.
    */
   @Embedded
@@ -43,7 +49,6 @@ public class PropertyInformation {
    */
   @Embedded
   private PropertyFloor propertyFloor;
-
   /**
    * 주차 가능 여부.
    */
@@ -56,7 +61,7 @@ public class PropertyInformation {
   /**
    * 준공일자.
    */
-  private LocalDate estDate;
+  private LocalDate completionDate;
 
   /**
    * 매물 정보 생성자.
@@ -64,19 +69,21 @@ public class PropertyInformation {
   @Builder
   public PropertyInformation(int area,
                              StructureType structureType,
+                             ContractType contractType,
                              PropertyPrice propertyPrice,
                              ResidentialType residentialType,
                              PropertyFloor propertyFloor,
                              boolean availableParking,
                              LocalDate moveInDate,
-                             LocalDate estDate) {
+                             LocalDate completionDate) {
     this.area = area;
     this.structureType = structureType;
+    this.contractType = contractType;
     this.propertyPrice = propertyPrice;
     this.residentialType = residentialType;
     this.propertyFloor = propertyFloor;
     this.availableParking = availableParking;
     this.moveInDate = moveInDate;
-    this.estDate = estDate;
+    this.completionDate = completionDate;
   }
 }

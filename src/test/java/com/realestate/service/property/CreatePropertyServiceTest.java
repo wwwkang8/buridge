@@ -6,6 +6,7 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
 import com.realestate.service.property.address.entity.PropertyAddressRepository;
+import com.realestate.service.property.constant.ContractType;
 import com.realestate.service.property.constant.ResidentialType;
 import com.realestate.service.property.constant.StructureType;
 import com.realestate.service.property.dto.CreatePropertyCommand;
@@ -83,13 +84,14 @@ class CreatePropertyServiceTest {
           .area(givenArea)
           .availableParking(true)
           .deposit(givenDeposit)
-          .estDate(LocalDate.now())
+          .completionDate(LocalDate.now())
           .moveInDate(LocalDate.now())
           .adminPrice(givenAdminPrice)
           .sellPrice(givenSellPrice)
           .monthlyPrice(givenMonthlyPrice)
           .residentialType(ResidentialType.APARTMENT)
-          .structureType(StructureType.TREE_ROOM)
+          .structureType(StructureType.THREE_ROOM)
+          .contractType(ContractType.SALE)
           .floor(givenFloor)
           .topFloor(givenTopFloor)
           .build();
