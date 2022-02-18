@@ -1,5 +1,6 @@
 package com.realestate.service.property.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -12,12 +13,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.realestate.service.common.entity.BaseDateTimeEntity;
+import com.realestate.service.property.constant.ContractType;
+import com.realestate.service.property.constant.ResidentialType;
+import com.realestate.service.property.constant.StructureType;
 import com.realestate.service.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
+@DynamicUpdate
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table
@@ -58,6 +64,17 @@ public class Property extends BaseDateTimeEntity {
                   String content,
                   PropertyInformation propertyInformation) {
     this.user = user;
+    this.title = title;
+    this.content = content;
+    this.propertyInformation = propertyInformation;
+  }
+
+  /**
+   * 매물 정보를 업데이트 합니다.
+   */
+  public void update(String title,
+                     String content,
+                     PropertyInformation propertyInformation) {
     this.title = title;
     this.content = content;
     this.propertyInformation = propertyInformation;
