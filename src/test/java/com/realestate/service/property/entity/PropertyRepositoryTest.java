@@ -63,7 +63,76 @@ class PropertyRepositoryTest {
   @AfterEach
   void after() {
     propertyRepository.deleteAll();
+    propertyAddressRepository.deleteAll();
+    propertyImageRepository.deleteAll();
     userRepository.deleteAll();
+  }
+
+  @Nested
+  @DisplayName("findByIdAndUserId 메서드는")
+  class DescribeOf_findByIdAndUserId {
+    final long givenSellPrice = 900000000L;
+    final long givenDeposit = 15000000L;
+    final int givenAdminPrice = 250000;
+    final int givenMonthlyPrice = 400000;
+    final int givenArea = 38500;
+    final int givenFloor = 8;
+    final int givenTopFloor = 15;
+    final String givenTitle = "findTestTitle";
+    final String givenContent = "findTestContent";
+
+    private Property subject() {
+      var givenPropertyPrice = PropertyPrice.builder()
+          .sellPrice(givenSellPrice)
+          .deposit(givenDeposit)
+          .adminPrice(givenAdminPrice)
+          .monthlyPrice(givenMonthlyPrice)
+          .build();
+
+      var givenPropertyInformation = PropertyInformation.builder()
+          .area(givenArea)
+          .completionDate(LocalDate.now())
+          .moveInDate(LocalDate.now())
+          .propertyPrice(givenPropertyPrice)
+          .propertyFloor(new PropertyFloor(givenFloor, givenTopFloor))
+          .availableParking(true)
+          .residentialType(APARTMENT)
+          .structureType(THREE_ROOM)
+          .contractType(JEONSE)
+          .build();
+
+      return Property.builder()
+          .user(dummyUser)
+          .title(givenTitle)
+          .content(givenContent)
+          .propertyInformation(givenPropertyInformation)
+          .build();
+    }
+
+
+    @Nested
+    @DisplayName("매물 식별자와 유저 식별자가 주어질 경우")
+    class ContextWith_propertyIdAndUserIdCondition {
+
+      @Test
+      @DisplayName("조건에 해당하는 매물 정보를 반환한다.")
+      void it_returns() {
+
+        // given
+        Property savedProperty = propertyRepository.save(subject());
+
+        // when
+        Property findProperty = propertyRepository.findByIdAndUserId(savedProperty.getId(), dummyUser.getId()).get();
+
+        // then
+        assertThat(findProperty).isNotNull();
+        assertThat(findProperty.getId()).isEqualTo(savedProperty.getId());
+        assertThat(findProperty.getTitle()).isEqualTo(givenTitle);
+        assertThat(findProperty.getPropertyInformation().getPropertyFloor().getTopFloor()).isEqualTo(givenTopFloor);
+
+      }
+    }
+
   }
 
   @Nested

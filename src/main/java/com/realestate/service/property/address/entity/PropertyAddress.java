@@ -72,4 +72,21 @@ public class PropertyAddress {
     this.latitude = latitude;
     this.longitude = longitude;
   }
+
+  /**
+   * 매물 주소를 변경합니다.
+   */
+  public void update(String city,
+                     String address,
+                     String roadAddress,
+                     String zipcode,
+                     double latitude,
+                     double longitude) {
+    this.city = city;
+    this.address = address;
+    this.roadAddress = roadAddress;
+    this.zipcode = zipcode;
+    this.latitude = latitude;
+    this.longitude = longitude;
+  }
 }
