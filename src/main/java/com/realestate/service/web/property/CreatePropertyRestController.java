@@ -22,8 +22,8 @@ public class CreatePropertyRestController {
   /**
    * 매물 등록 요청을 핸들링 합니다.
    *
-   * @param request 등록 요청 정보.
-   * @return 등록된 매물 정보.
+   * @param request 등록 요청 정보
+   * @return 등록된 매물 정보
    */
   @PostMapping("/api/properties")
   public CreatePropertyResponse create(@RequestBody @Valid CreatePropertyRequest request) {
