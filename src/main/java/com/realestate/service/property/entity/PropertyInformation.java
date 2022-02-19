@@ -87,26 +87,4 @@ public class PropertyInformation {
     this.completionDate = completionDate;
   }
 
-  /**
-   * 매물 정보를 업데이트합니다.
-   */
-  public void update(int area,
-                     StructureType structureType,
-                     ContractType contractType,
-                     PropertyPrice propertyPrice,
-                     ResidentialType residentialType,
-                     PropertyFloor propertyFloor,
-                     boolean availableParking,
-                     LocalDate moveInDate,
-                     LocalDate completionDate) {
-    this.area = area;
-    this.structureType = structureType;
-    this.contractType = contractType;
-    this.propertyPrice = propertyPrice;
-    this.residentialType = residentialType;
-    this.propertyFloor = propertyFloor;
-    this.availableParking = availableParking;
-    this.moveInDate = moveInDate;
-    this.completionDate = completionDate;
-  }
 }
