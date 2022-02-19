@@ -1,6 +1,5 @@
 package com.realestate.service.property.entity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -13,9 +12,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.realestate.service.common.entity.BaseDateTimeEntity;
-import com.realestate.service.property.constant.ContractType;
-import com.realestate.service.property.constant.ResidentialType;
-import com.realestate.service.property.constant.StructureType;
 import com.realestate.service.user.entity.User;
 import lombok.AccessLevel;
 import lombok.Builder;
