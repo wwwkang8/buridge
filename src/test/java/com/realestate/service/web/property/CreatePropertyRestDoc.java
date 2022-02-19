@@ -11,8 +11,10 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -93,11 +95,39 @@ public class CreatePropertyRestDoc {
             document("properties/{method-name}",
                 preprocessRequest(prettyPrint()),
                 preprocessResponse(prettyPrint()),
+                requestFields(
+                    requestSnippets()
+                ),
                 responseFields(
                     beneathPath("data").withSubsectionId("data"),
                     resultsSnippets()
                 )
         ));
+  }
+
+  private List<FieldDescriptor> requestSnippets() {
+    return List.of(
+        fieldWithPath("title").type(STRING).description("제목"),
+        fieldWithPath("content").type(STRING).description("내용"),
+        fieldWithPath("information.area").type(NUMBER).description("면적"),
+        fieldWithPath("information.structureType").type(STRING).description("구조 타입 <<StructureType>>"),
+        fieldWithPath("information.contractType").type(STRING).description("거래 타입 <<ContractType>>"),
+        fieldWithPath("information.sellPrice").type(NUMBER).description("매매 금액").optional(),
+        fieldWithPath("information.deposit").type(NUMBER).description("보증금").optional(),
+        fieldWithPath("information.monthlyPrice").type(NUMBER).description("월세").optional(),
+        fieldWithPath("information.adminPrice").type(NUMBER).description("관리비").optional(),
+        fieldWithPath("information.residentialType").type(STRING).description("거주 타입 <<ResidentialType>>"),
+        fieldWithPath("information.floor").type(NUMBER).description("층"),
+        fieldWithPath("information.topFloor").type(NUMBER).description("최고층"),
+        fieldWithPath("information.availableParking").type(BOOLEAN).description("주차 가능 여부"),
+        fieldWithPath("information.moveInDate").type(STRING).description("입주 가능일자"),
+        fieldWithPath("information.completionDate").type(STRING).description("준공일자"),
+        fieldWithPath("address.city").type(STRING).description("도시"),
+        fieldWithPath("address.address").type(STRING).description("주소"),
+        fieldWithPath("address.roadAddress").type(STRING).description("도로명 주소"),
+        fieldWithPath("address.zipcode").type(STRING).description("우편번호"),
+        fieldWithPath("address.latitude").type(NUMBER).description("위도"),
+        fieldWithPath("address.longitude").type(NUMBER).description("경도"));
   }
 
   private List<FieldDescriptor> resultsSnippets() {
