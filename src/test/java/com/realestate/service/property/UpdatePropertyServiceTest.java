@@ -63,6 +63,8 @@ class UpdatePropertyServiceTest {
     final int givenArea = 200000;
     final int givenFloor = 1;
     final int givenTopFloor = 5;
+    final LocalDate givenCompletionDate = LocalDate.now().minusYears(3);
+    final LocalDate givenMoveInDate = LocalDate.now().plusDays(10);
     final String givenTitle = "updateTestTitle";
     final String givenContent = "updateTest";
     final String givenCity = "givenCity";
@@ -79,8 +81,8 @@ class UpdatePropertyServiceTest {
           .area(givenArea)
           .availableParking(false)
           .deposit(givenDeposit)
-          .completionDate(LocalDate.now())
-          .moveInDate(LocalDate.now())
+          .completionDate(givenCompletionDate)
+          .moveInDate(givenMoveInDate)
           .adminPrice(givenAdminPrice)
           .sellPrice(givenSellPrice)
           .monthlyPrice(givenMonthlyPrice)
@@ -117,11 +119,25 @@ class UpdatePropertyServiceTest {
         Property updatedProperty = updatePropertyService.update(givenPropertyId, command);
 
         // then
+        var resultInformation = updatedProperty.getPropertyInformation();
+        var resultPrice = updatedProperty.getPropertyInformation().getPropertyPrice();
+        var resultFloor = updatedProperty.getPropertyInformation().getPropertyFloor();
+
         assertThat(updatedProperty.getTitle()).isEqualTo(givenTitle);
         assertThat(updatedProperty.getContent()).isEqualTo(givenContent);
-        assertThat(updatedProperty.getPropertyInformation().getAvailableParking()).isFalse();
-        assertThat(updatedProperty.getPropertyInformation().getPropertyPrice().getSellPrice()).isEqualTo(givenSellPrice);
-        assertThat(updatedProperty.getPropertyInformation().getPropertyFloor().getTopFloor()).isEqualTo(givenTopFloor);
+        assertThat(resultInformation.getAvailableParking()).isFalse();
+        assertThat(resultInformation.getArea()).isEqualTo(givenArea);
+        assertThat(resultInformation.getCompletionDate()).isEqualTo(givenCompletionDate);
+        assertThat(resultInformation.getMoveInDate()).isEqualTo(givenMoveInDate);
+        assertThat(resultPrice.getAdminPrice()).isEqualTo(givenAdminPrice);
+        assertThat(resultPrice.getSellPrice()).isEqualTo(givenSellPrice);
+        assertThat(resultPrice.getMonthlyPrice()).isEqualTo(givenMonthlyPrice);
+        assertThat(resultPrice.getDeposit()).isEqualTo(givenDeposit);
+        assertThat(resultInformation.getResidentialType()).isEqualTo(ResidentialType.APARTMENT);
+        assertThat(resultInformation.getStructureType()).isEqualTo(StructureType.THREE_ROOM);
+        assertThat(resultInformation.getContractType()).isEqualTo(ContractType.SALE);
+        assertThat(resultFloor.getFloor()).isEqualTo(givenFloor);
+        assertThat(resultFloor.getTopFloor()).isEqualTo(givenTopFloor);
 
       }
     }
