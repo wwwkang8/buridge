@@ -15,7 +15,9 @@ import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
 import com.realestate.service.user.entity.User;
 import com.realestate.service.web.property.request.CreatePropertyRequest;
+import com.realestate.service.web.property.request.UpdatePropertyRequest;
 import com.realestate.service.web.property.response.CreatePropertyResponse;
+import com.realestate.service.web.property.response.UpdatePropertyResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,6 +45,8 @@ public class PropertyMockHelper {
   final int givenTopFloor = 4;
   final String givenTitle = "createTestSubject";
   final String givenContent = "createTestContents";
+  final String givenUpdatedTitle = "updateTitle";
+  final String givenUpdatedContent = "updateContent";
 
   protected User savedUser() {
     return User.createUser(
@@ -107,5 +111,57 @@ public class PropertyMockHelper {
     }
   }
 
+  protected Property updatedProperty() {
+    var updatedProperty = createdProperty();
+
+    var givenPropertyPrice = PropertyPrice.builder()
+        .sellPrice(givenSellPrice)
+        .deposit(givenDeposit)
+        .adminPrice(givenAdminPrice)
+        .monthlyPrice(givenMonthlyPrice)
+        .build();
+
+    var givenPropertyInformation = PropertyInformation.builder()
+        .area(givenArea)
+        .completionDate(LocalDate.now())
+        .moveInDate(LocalDate.now())
+        .propertyPrice(givenPropertyPrice)
+        .propertyFloor(new PropertyFloor(givenFloor, givenTopFloor))
+        .availableParking(true)
+        .residentialType(APARTMENT)
+        .structureType(THREE_ROOM)
+        .contractType(JEONSE)
+        .build();
+
+    updatedProperty.update(givenUpdatedTitle, givenUpdatedContent, givenPropertyInformation);
+
+    return updatedProperty;
+  }
+
+  protected String getUpdatePropertyRequest() throws IOException {
+    return objectMapper.writeValueAsString(
+        objectMapper.readValue(
+            ResourceUtils.getFile(CLASSPATH_URL_PREFIX +
+                "mock/property/update_property_request.json"), UpdatePropertyRequest.class));
+  }
+
+  protected UpdatePropertyResponse getUpdatePropertyResponse() {
+    var givenId = 1L;
+    return new UpdatePropertyResponseTestDto(
+        givenId,
+        givenUpdatedTitle,
+        givenUpdatedContent,
+        LocalDateTime.now()
+    );
+  }
+
+  static class UpdatePropertyResponseTestDto extends UpdatePropertyResponse {
+    public UpdatePropertyResponseTestDto(long id,
+                                         String title,
+                                         String content,
+                                         LocalDateTime modifiedDateTime) {
+      super(id, title, content, modifiedDateTime);
+    }
+  }
 
 }
