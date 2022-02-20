@@ -22,8 +22,25 @@ include::property-enums.adoc[]
 ==== HTTP Request
 include::{path}/create/http-request.adoc[]
 
+=== Request fields
+include::{path}/create/request-fields.adoc[]
+
 === 응답 페이로드
 include::{path}/create/response-fields-data.adoc[]
 
 === 응답 샘플
 include::{path}/create/http-response.adoc[]
+
+== 매물 수정
+
+==== HTTP Request
+include::{path}/update/http-request.adoc[]
+
+=== Request fields
+include::{path}/update/request-fields.adoc[]
+
+=== 응답 페이로드
+include::{path}/update/response-fields-data.adoc[]
+
+=== 응답 샘플
+include::{path}/update/http-response.adoc[]

@@ -2,6 +2,7 @@ package com.realestate.service.web.property;
 
 import static com.realestate.service.utils.RestDocFormatGenerator.getDateTimeFormat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -9,19 +10,19 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
-import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.realestate.service.property.CreatePropertyUseCase;
-import com.realestate.service.web.property.response.CreatePropertyResponse;
+import com.realestate.service.property.UpdatePropertyUseCase;
+import com.realestate.service.web.property.response.UpdatePropertyResponse;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -43,17 +44,17 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 @DisplayName("매물 정보")
 @ExtendWith(RestDocumentationExtension.class)
-@WebMvcTest(CreatePropertyRestController.class)
+@WebMvcTest(UpdatePropertyRestController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @ActiveProfiles("test")
-public class CreatePropertyRestDoc {
+public class UpdatePropertyRestDoc {
 
   final PropertyMockHelper helper = new PropertyMockHelper();
 
   MockMvc mockMvc;
 
   @MockBean
-  CreatePropertyUseCase createPropertyUseCase;
+  UpdatePropertyUseCase updatePropertyUseCase;
 
   @BeforeEach
   void setUp(WebApplicationContext webApplicationContext,
@@ -65,26 +66,27 @@ public class CreatePropertyRestDoc {
         .addFilters(new CharacterEncodingFilter("UTF-8", true))
         .build();
 
-    Mockito.mockStatic(CreatePropertyResponse.class);
+    Mockito.mockStatic(UpdatePropertyResponse.class);
   }
 
 
   @Test
-  @DisplayName("매물 등록 API")
-  void create() throws Exception {
-    var property = helper.createdProperty();
-    var response = helper.getCreatePropertyResponse();
+  @DisplayName("매물 수정 API")
+  void update() throws Exception {
+    var givenPropertyId = 1L;
+    var property = helper.updatedProperty();
+    var response = helper.getUpdatePropertyResponse();
 
-    given(createPropertyUseCase.create(any()))
+    given(updatePropertyUseCase.update(anyLong(), any()))
         .willReturn(property);
 
-    given(CreatePropertyResponse.of(any()))
+    given(UpdatePropertyResponse.of(any()))
         .willReturn(response);
 
     // when
     final ResultActions resultActions = mockMvc.perform(
-        post("/api/properties")
-            .content(helper.getCreatePropertyRequest())
+        put("/api/properties/{propertyId}", givenPropertyId)
+            .content(helper.getUpdatePropertyRequest())
             .contentType(APPLICATION_JSON)
             .accept(APPLICATION_JSON)
     );
@@ -135,7 +137,7 @@ public class CreatePropertyRestDoc {
         fieldWithPath("id").type(NUMBER).description("매물 번호"),
         fieldWithPath("title").type(STRING).description("제목"),
         fieldWithPath("content").type(STRING).description("내용"),
-        fieldWithPath("createdDateTime").type(STRING).description("등록 일시").attributes(getDateTimeFormat())
+        fieldWithPath("modifiedDateTime").type(STRING).description("수정 일시").attributes(getDateTimeFormat())
     );
   }
 

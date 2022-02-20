@@ -1,0 +1,27 @@
+{
+  "title": "updateTitle",
+  "content": "updateContent",
+  "information" : {
+    "area": 123,
+    "structureType": "MORE_THAN_FOUR_ROOM",
+    "contractType": "SALE",
+    "sellPrice": 1200000000,
+    "deposit": null,
+    "monthlyPrice" : null,
+    "adminPrice" : 120000,
+    "residentialType" : "HOUSING",
+    "floor" : 1,
+    "topFloor" : 3,
+    "availableParking" : true,
+    "moveInDate" : "2022-01-25",
+    "completionDate" : "2015-02-25"
+  },
+  "address" : {
+    "city" : "서울",
+    "address" : "서울특별시 은평구 xxx동 xx호",
+    "roadAddress" : "서울특별시 은평구 xxx로 11가길",
+    "zipcode" : "01185",
+    "latitude" : 9990.217822535423,
+    "longitude" : 230.11112374292228
+  }
+}
