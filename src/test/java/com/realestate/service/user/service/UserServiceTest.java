@@ -121,6 +121,8 @@ public class UserServiceTest {
         assertThat(secretCode).isLessThanOrEqualTo(999999);
       }
 
+      // 이메일 전송 후 성공여부 테스트 하기 : scssYn 으로 응답받음.
+
   }
 
 

@@ -5,12 +5,19 @@ import javax.validation.Valid;
 import com.realestate.service.user.dto.UserEmailDto;
 import com.realestate.service.user.dto.UserSignupDto;
 import com.realestate.service.user.entity.User;
+import com.realestate.service.user.jwt.JwtRequest;
+import com.realestate.service.user.jwt.JwtResponse;
+import com.realestate.service.user.jwt.JwtTokenUtil;
+import com.realestate.service.user.jwt.JwtUserDetailService;
 import com.realestate.service.user.service.UserService;
 import com.realestate.service.web.user.response.SignupUserResponse;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +26,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/api/users/")
+@RequiredArgsConstructor
 public class UserRestController {
 
-  @Autowired
-  UserService userService;
+  private final UserService userService;
 
-  private Logger logger = LoggerFactory.getLogger(this.getClass());
+  private final JwtTokenUtil jwtTokenUtil;
+
+  private final JwtUserDetailService jwtUserDetailService;
+
+  private final AuthenticationManager authenticationManager;
+
 
   /**.
    * 회원가입 : 이메일, 비밀번호를 입력하면 회원가입
@@ -46,6 +58,36 @@ public class UserRestController {
 
     userService.sendValidationCode(userEmailDto);
 
+  }
+
+  /**.
+   * 로그인 : JWT 토큰을 발행하여 리턴한다.
+   * */
+  @PostMapping(value = "/authenticate")
+  public JwtResponse createAuthenticationToken(@RequestBody @Valid JwtRequest jwtRequest)
+      throws Exception {
+
+    authenticate(jwtRequest.getEmail(), jwtRequest.getPassword());
+
+    UserDetails userDetails = jwtUserDetailService.loadUserByUsername(jwtRequest.getEmail());
+
+    final String token = jwtTokenUtil.generateToken(userDetails);
+
+    return new JwtResponse(token);
+  }
+
+  /** 입력받은 이메일, 비밀번호 검증
+   * 해당 메서드를 JwtTokenUtil에서 호출하는 것으로 하였으나
+   * 순환참조가 발생하여 Controller로 뺐다.
+   * */
+  public void authenticate(String email, String password) throws Exception {
+    try {
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+    } catch (DisabledException e) {
+      throw new Exception("USER_DISABLED", e);
+    } catch (BadCredentialsException e) {
+      throw new Exception("INVALID_CREDENTIALS", e);
+    }
   }
 
 

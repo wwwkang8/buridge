@@ -4,6 +4,9 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -11,6 +14,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.realestate.service.user.jwt.JwtAuthenticationEntryPoint;
+import com.realestate.service.user.jwt.JwtTokenUtil;
+import com.realestate.service.user.jwt.JwtUserDetailService;
+import com.realestate.service.user.service.PasswordEncoderService;
 import com.realestate.service.user.service.UserService;
 import com.realestate.service.web.user.response.SignupUserResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +32,7 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -49,7 +57,24 @@ public class UserRestDoc {
   private MockMvc mockMvc;
 
   @MockBean
+  JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+  @MockBean
+  JwtTokenUtil jwtTokenUtil;
+
+  @MockBean
+  JwtUserDetailService jwtUserDetailService;
+
+  @MockBean
+  AuthenticationManager authenticationManager;
+
+  @MockBean
   UserService userService;
+
+  @MockBean
+  PasswordEncoderService passwordEncoderService;
+
+
 
   @BeforeEach
   void setup(WebApplicationContext webApplicationContext
@@ -111,8 +136,9 @@ public class UserRestDoc {
      * RestDoc 참고링크 : https://techblog.woowahan.com/2597/
      * */
     resultActions.andExpect(status().isOk())
-                 .andDo(document("user/create"
-                     ,
+                 .andDo(document("user/create",
+                     preprocessRequest(prettyPrint()),
+                     preprocessResponse(prettyPrint()),
                      requestFields(
                          fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
                          fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
@@ -124,7 +150,7 @@ public class UserRestDoc {
                          fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                          fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
                          fieldWithPath("data").type(JsonFieldType.NULL).description("데이터")
-                         )
+                      )
                      )
                  );
 
