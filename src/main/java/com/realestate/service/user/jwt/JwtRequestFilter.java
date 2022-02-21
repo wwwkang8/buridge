@@ -75,7 +75,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         /**
          * UsernamePasswordAuthenticationToken 생성시 마지막 파라메터 authorities 확인하기
          * */
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
+            = new UsernamePasswordAuthenticationToken(
             userDetails, null, userDetails.getAuthorities());
         usernamePasswordAuthenticationToken
             .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -17,7 +17,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.realestate.service.user.jwt.JwtAuthenticationEntryPoint;
 import com.realestate.service.user.jwt.JwtTokenUtil;
 import com.realestate.service.user.jwt.JwtUserDetailService;
-import com.realestate.service.user.service.PasswordEncoderService;
 import com.realestate.service.user.service.UserService;
 import com.realestate.service.web.user.response.SignupUserResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,11 +69,7 @@ public class UserRestDoc {
 
   @MockBean
   UserService userService;
-
-  @MockBean
-  PasswordEncoderService passwordEncoderService;
-
-
+  
 
   @BeforeEach
   void setup(WebApplicationContext webApplicationContext
