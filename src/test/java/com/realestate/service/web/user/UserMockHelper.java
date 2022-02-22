@@ -10,6 +10,8 @@ import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
 import com.realestate.service.user.dto.UserSignupDto;
 import com.realestate.service.user.entity.User;
+import com.realestate.service.user.jwt.JwtRequest;
+import com.realestate.service.user.jwt.JwtResponse;
 import com.realestate.service.web.user.request.SignupUserRequest;
 import com.realestate.service.web.user.response.SignupUserResponse;
 import org.springframework.util.ResourceUtils;
@@ -26,6 +28,7 @@ public class UserMockHelper {
   final String givenEmail = "test123@naver.com";
   final String givenPassword = "12341234";
   final String givenNickName = "givenNickName";
+  final String givenToken = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN0MTIzQG5hdmVyLmNvbSIsImV4cCI6MTY0NTYxNTYzMywiaWF0IjoxNjQ1NTI5MjMzfQ.r8fr68_kmyb_nWYenjNUbejLdI6ZWV4n5HxfXT6uZMk6dhPysMYBwGfXDTHYBYY-qfkkqYi6fgbjvvhVYwYajw";
 
   /**
    * readValue : Java 오브젝트 --> JSON 변환
@@ -37,6 +40,17 @@ public class UserMockHelper {
             ResourceUtils.getFile(CLASSPATH_URL_PREFIX +
                 "mock/user/signup_user_request.json"), SignupUserRequest.class));
     }
+
+  /**
+   * readValue : Java 오브젝트 --> JSON 변환
+   * writeValueAsString : JSON --> Java 오브젝트
+   * */
+  protected String getJwtRequest() throws IOException {
+    return objectMapper.writeValueAsString(
+        objectMapper.readValue(
+            ResourceUtils.getFile(CLASSPATH_URL_PREFIX +
+                "mock/user/jwt_request.json"), JwtRequest.class));
+  }
 
   /**
    * 용도 : User 엔티티를 생성하기 위한 함수
@@ -74,6 +88,27 @@ public class UserMockHelper {
     return new SignupUserResponse(givenEmail, givenNickName, Status.ACTIVE.toString(), Role.NORMAL.toString());
 
   }
+
+  /**
+   * 용도 : JWT 토큰 발행을 위한 사용자 이메일, 비밀번호 Request 생성
+   * */
+  protected JwtRequest createJwtRequest() {
+    return JwtRequest.builder()
+                     .email(givenEmail)
+                     .password(givenPassword)
+                     .build();
+  }
+
+  /**
+   * 용도 : JWT 토큰 전송을 위한 Response 생성
+   * */
+  protected JwtResponse createJwtResponse() {
+    return JwtResponse.builder()
+        .jwtToken(givenToken)
+        .build();
+  }
+
+
 
 
 }

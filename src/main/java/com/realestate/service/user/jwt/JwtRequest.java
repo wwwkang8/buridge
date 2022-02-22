@@ -4,6 +4,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -11,6 +12,7 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class JwtRequest  {
 
   @NotBlank(message = "이메일 입력은 필수입니다.")

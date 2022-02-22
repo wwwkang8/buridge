@@ -14,9 +14,12 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.realestate.service.config.WebSecurityConfig;
 import com.realestate.service.user.jwt.JwtAuthenticationEntryPoint;
+import com.realestate.service.user.jwt.JwtRequestFilter;
 import com.realestate.service.user.jwt.JwtTokenUtil;
 import com.realestate.service.user.jwt.JwtUserDetailService;
+import com.realestate.service.user.service.PasswordEncoderService;
 import com.realestate.service.user.service.UserService;
 import com.realestate.service.web.user.response.SignupUserResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,6 +35,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -56,6 +60,12 @@ public class UserRestDoc {
   private MockMvc mockMvc;
 
   @MockBean
+  UserService userService;
+
+  @MockBean
+  WebSecurityConfig webSecurityConfig;
+
+  @MockBean
   JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
   @MockBean
@@ -65,11 +75,18 @@ public class UserRestDoc {
   JwtUserDetailService jwtUserDetailService;
 
   @MockBean
+  JwtRequestFilter jwtRequestFilter;
+
+  @MockBean
   AuthenticationManager authenticationManager;
 
   @MockBean
-  UserService userService;
-  
+  PasswordEncoderService passwordEncoderService;
+
+  @MockBean
+  WebSecurityConfiguration webSecurityConfiguration;
+
+
 
   @BeforeEach
   void setup(WebApplicationContext webApplicationContext
@@ -81,11 +98,9 @@ public class UserRestDoc {
                                   .addFilters(new CharacterEncodingFilter("UTF-8", true))
                                   .build();
 
-    /***
-     * 용도 : static 함수를 모킹하기 위해서는 Mockito.mockStatic 함수가 필요함.
-     * 참고링크 : https://asolntsev.github.io/en/2020/07/11/mockito-static-methods/
-     */
-    Mockito.mockStatic(SignupUserResponse.class);
+
+
+
 
   }
 
@@ -93,6 +108,12 @@ public class UserRestDoc {
   @Test
   @DisplayName("사용자 등록")
   void signup() throws Exception {
+
+    /***
+     * 용도 : static 함수를 모킹하기 위해서는 Mockito.mockStatic 함수가 필요함.
+     * 참고링크 : https://asolntsev.github.io/en/2020/07/11/mockito-static-methods/
+     */
+    Mockito.mockStatic(SignupUserResponse.class);
 
     // User 엔티티 생성 : signup 함수를 수행한 후 반환되는 User 엔티티를 표현
     var user = userMockHelper.createUser();
@@ -129,9 +150,10 @@ public class UserRestDoc {
     /**
      * then
      * RestDoc 참고링크 : https://techblog.woowahan.com/2597/
+     * 참고링크 2 : https://jaehun2841.github.io/2019/08/04/2019-08-04-spring-rest-docs/#spring-rest-docs-architecture
      * */
     resultActions.andExpect(status().isOk())
-                 .andDo(document("user/create",
+                 .andDo(document("user/signup",
                      preprocessRequest(prettyPrint()),
                      preprocessResponse(prettyPrint()),
                      requestFields(
@@ -148,7 +170,65 @@ public class UserRestDoc {
                       )
                      )
                  );
+  }
 
+  @Test
+  @DisplayName("JWT 토큰 발행")
+  void authenticate() throws Exception {
+    // User 엔티티 생성 : signup 함수를 수행한 후 반환되는 User 엔티티를 표현
+    var user = userMockHelper.createUser();
+
+    // JwtRequest 생성 : 이메일, 비밀번호로 JwtRequest 생성
+    var jwtRequest = userMockHelper.createJwtRequest();
+
+    // JwtResponse 생성 : 발행한 토큰 응답 객체
+    var jwtResponse = userMockHelper.createJwtResponse();
+
+    // 생성된 토큰 : Mock으로 생성된 토큰
+    String givenToken = jwtResponse.getJwtToken();
+
+    // UserDetails 생성 : JwtRequest를 사용하여 Mock UserDetails 생성
+    var userDetails = jwtUserDetailService.loadUserByUsername(jwtRequest.getEmail());
+
+    // jwtUserDetailService로 loadUserByUsername을 호출하면 이전에 생성된 userDetails를 리턴
+    given(jwtUserDetailService.loadUserByUsername(jwtRequest.getEmail())).willReturn(userDetails);
+
+    // jwtTokenUtil로 generateToken 호출하면 Mock으로 생성한 토큰 리턴
+    given(jwtTokenUtil.generateToken(userDetails)).willReturn(givenToken);
+
+    /**
+     * when
+     * post : /api/users/authenticate/ URL 호출
+     * content : JSON으로 된 입력 내용 받는다.
+     * contentType : 입력값의 타입
+     * */
+    ResultActions resultActions = mockMvc.perform(
+        post("/api/users/authenticate/")
+            .content(userMockHelper.getJwtRequest())
+            .contentType(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+    );
+
+    /**
+     * then
+     * RestDoc 참고링크 : https://techblog.woowahan.com/2597/
+     * 참고링크 2 : https://jaehun2841.github.io/2019/08/04/2019-08-04-spring-rest-docs/#spring-rest-docs-architecture
+     * */
+    resultActions.andExpect(status().isOk())
+        .andDo(document("user/authenticate",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            requestFields(
+                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호")
+            ),
+            responseFields(
+                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
+                fieldWithPath("data.jwtToken").type(JsonFieldType.STRING).description("데이터")
+            )
+            )
+        );
 
 
   }
