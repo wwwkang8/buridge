@@ -1,0 +1,37 @@
+= 사용자 API Document
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectlinks:
+:snippets: ../../../build/generated-snippets
+
+== 소개
+
+사용자 회원가입, 인증 API
+
+== 사용자 회원가입
+
+:path: {snippets}/user
+
+==== HTTP Request
+include::{path}/signup/http-request.adoc[]
+
+=== 응답 페이로드
+include::{path}/signup/response-fields.adoc[]
+
+=== 응답 샘플
+include::{path}/signup/http-response.adoc[]
+
+
+== 사용자 인증
+
+==== HTTP Request
+include::{path}/authenticate/http-request.adoc[]
+
+=== 응답 페이로드
+include::{path}/authenticate/response-fields.adoc[]
+
+=== 응답 샘플
+include::{path}/authenticate/http-response.adoc[]
