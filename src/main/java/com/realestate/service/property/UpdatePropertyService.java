@@ -21,17 +21,23 @@ public class UpdatePropertyService implements UpdatePropertyUseCase {
   @Transactional
   @Override
   public Property update(long propertyId, UpdatePropertyCommand command) {
-    Property findProperty = propertyRepository.findByIdAndUserId(propertyId, command.getUserId())
-        .orElseThrow(() -> new PropertyNotFoundException(propertyId));
-
-    PropertyAddress findPropertyAddress = propertyAddressRepository.findByProperty(findProperty)
-        .orElseThrow(() -> new PropertyAddressNotFoundException(propertyId));
+    Property findProperty = findByIdAndUserId(propertyId, command);
+    PropertyAddress findPropertyAddress = findAddressByProperty(findProperty);
 
     updateProperty(command, findProperty);
-
     updatePropertyAddress(command, findPropertyAddress);
 
     return findProperty;
+  }
+
+  private Property findByIdAndUserId(long propertyId, UpdatePropertyCommand command) {
+    return propertyRepository.findByIdAndUserId(propertyId, command.getUserId())
+        .orElseThrow(() -> new PropertyNotFoundException(propertyId));
+  }
+
+  private PropertyAddress findAddressByProperty(Property findProperty) {
+    return propertyAddressRepository.findByProperty(findProperty)
+        .orElseThrow(() -> new PropertyAddressNotFoundException(findProperty.getId()));
   }
 
   private void updateProperty(UpdatePropertyCommand command, Property findProperty) {
