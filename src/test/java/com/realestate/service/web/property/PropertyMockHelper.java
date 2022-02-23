@@ -17,6 +17,7 @@ import com.realestate.service.user.entity.User;
 import com.realestate.service.web.property.request.CreatePropertyRequest;
 import com.realestate.service.web.property.request.UpdatePropertyRequest;
 import com.realestate.service.web.property.response.CreatePropertyResponse;
+import com.realestate.service.web.property.response.DeletePropertyResponse;
 import com.realestate.service.web.property.response.UpdatePropertyResponse;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -164,4 +165,21 @@ public class PropertyMockHelper {
     }
   }
 
+  protected Property deletedProperty() {
+    var property = createdProperty();
+    property.delete();
+    return property;
+  }
+
+  protected DeletePropertyResponse getDeletePropertyResponse() {
+    var givenId = 1L;
+    return new DeletePropertyResponseTestDto(givenId, LocalDateTime.now());
+  }
+
+  static class DeletePropertyResponseTestDto extends DeletePropertyResponse {
+    public DeletePropertyResponseTestDto(long id,
+                                         LocalDateTime deletedDateTime) {
+      super(id, deletedDateTime);
+    }
+  }
 }
