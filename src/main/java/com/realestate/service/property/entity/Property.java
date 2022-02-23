@@ -75,4 +75,8 @@ public class Property extends BaseDateTimeEntity {
     this.content = content;
     this.propertyInformation = propertyInformation;
   }
+
+  public void delete() {
+    this.deletedDateTime = LocalDateTime.now();
+  }
 }
