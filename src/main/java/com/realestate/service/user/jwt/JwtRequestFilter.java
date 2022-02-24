@@ -25,6 +25,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
   private final JwtUserDetailService jwtUserDetailService;
 
+  private final String BEARER_PREFIX = "Bearer ";
+
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -42,18 +44,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      * request 헤더에서 토큰을 가져온다.
      * 그리고 해당 토큰으로 사용자 이메일을 조회한다.
      * */
-    if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+    if (requestTokenHeader != null && requestTokenHeader.startsWith(BEARER_PREFIX)) {
+      jwtToken = requestTokenHeader.substring(BEARER_PREFIX.length());
+
       log.info("전체 헤더" + requestTokenHeader);
-      jwtToken = requestTokenHeader.substring(7);
       log.info("jwt token : " + jwtToken);
 
-      jwtToken = requestTokenHeader.substring(7);
       try {
-        email = jwtTokenUtil.getUseremailFromToken(jwtToken);
+        email = jwtTokenUtil.getUserEmailFromToken(jwtToken);
       } catch (IllegalArgumentException e) {
-        System.out.println("Unable to get JWT Token");
+        log.info("Unable to get JWT Token");
       } catch (ExpiredJwtException e) {
-        System.out.println("JWT Token has expired");
+        log.info("JWT Token has expired");
       }
     } else {
       log.info("토큰 추출시 오류 발생!! 1) 헤더에 Authorization 확인 2) 토큰헤더가 Bearer로 시작하는지 확인");

@@ -21,7 +21,7 @@ public class JwtTokenUtil {
   private String secretCode;
 
   /**User의 email을 JWT에서 가져온다. */
-  public String getUseremailFromToken(String token) {
+  public String getUserEmailFromToken(String token) {
     return Jwts.parser().setSigningKey(secretCode).parseClaimsJws(token).getBody().getSubject();
   }
 
@@ -56,7 +56,7 @@ public class JwtTokenUtil {
 
   /** 토큰 인증하기. */
   public Boolean validateToken(String token, UserDetails userDetails) {
-    final String emailFromToken = getUseremailFromToken(token);
+    final String emailFromToken = getUserEmailFromToken(token);
 
     return (emailFromToken.equals(userDetails.getUsername()) && !isTokenExpired(token));
   }
