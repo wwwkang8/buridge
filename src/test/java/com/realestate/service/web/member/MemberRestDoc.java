@@ -21,7 +21,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import com.realestate.service.config.WebSecurityConfig;
 import com.realestate.service.member.FindMemberUseCase;
+import com.realestate.service.user.jwt.JwtAuthenticationEntryPoint;
+import com.realestate.service.user.jwt.JwtRequestFilter;
+import com.realestate.service.user.jwt.JwtTokenUtil;
+import com.realestate.service.user.jwt.JwtUserDetailService;
+import com.realestate.service.user.service.PasswordEncoderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +38,8 @@ import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
@@ -53,6 +61,30 @@ public class MemberRestDoc {
 
   @MockBean
   FindMemberUseCase findMemberUseCase;
+
+  @MockBean
+  WebSecurityConfig webSecurityConfig;
+
+  @MockBean
+  JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+
+  @MockBean
+  JwtTokenUtil jwtTokenUtil;
+
+  @MockBean
+  JwtUserDetailService jwtUserDetailService;
+
+  @MockBean
+  JwtRequestFilter jwtRequestFilter;
+
+  @MockBean
+  AuthenticationManager authenticationManager;
+
+  @MockBean
+  PasswordEncoderService passwordEncoderService;
+
+  @MockBean
+  WebSecurityConfiguration webSecurityConfiguration;
 
   @BeforeEach
   void setUp(WebApplicationContext webApplicationContext,

@@ -21,6 +21,9 @@ spring:
   sendgrid:
     api-key: sendgrid에서 발급받은 키
 
+jwt:
+  secret: jwtsecretkey
+
 logging:
   level:
     org.springframework.cloud: info

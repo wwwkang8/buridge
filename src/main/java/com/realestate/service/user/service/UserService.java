@@ -1,6 +1,7 @@
 package com.realestate.service.user.service;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
@@ -148,6 +149,16 @@ public class UserService {
 
 
   }
+
+  /**.
+   * 사용자 조회 : 이메일을 사용하여 사용자 조회
+   * */
+  public Optional<User> findUserByEmail(String email) {
+
+    return userRepository.findUserByEmail(email);
+
+  }
+
 
 
 
