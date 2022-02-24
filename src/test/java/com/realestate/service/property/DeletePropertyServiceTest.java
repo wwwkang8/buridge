@@ -17,6 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @DisplayName("deletePropertyService 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -33,9 +34,13 @@ class DeletePropertyServiceTest {
   @BeforeEach
   void setUp() {
     var savedUser = helper.savedUser();
+    var savedProperty = helper.createdProperty(savedUser);
+    var fakeId = 1L;
+
+    ReflectionTestUtils.setField(savedProperty, "id", fakeId);
 
     given(propertyRepository.findByIdAndUserId(anyLong(), anyLong()))
-        .willReturn(Optional.of(helper.createdProperty(savedUser)));
+        .willReturn(Optional.of(savedProperty));
   }
 
   @Nested
@@ -58,6 +63,7 @@ class DeletePropertyServiceTest {
 
         // then
         Assertions.assertThat(deletedProperty).isNotNull();
+        Assertions.assertThat(deletedProperty.getId()).isEqualTo(givenPropertyId);
         Assertions.assertThat(deletedProperty.getDeletedDateTime()).isBeforeOrEqualTo(LocalDateTime.now());
 
       }
