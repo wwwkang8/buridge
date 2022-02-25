@@ -25,7 +25,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
   private final JwtUserDetailService jwtUserDetailService;
 
-  private final String BEARER_PREFIX = "Bearer ";
+  private final String bearPreFix = "Bearer ";
 
 
   @Override
@@ -44,8 +44,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
      * request 헤더에서 토큰을 가져온다.
      * 그리고 해당 토큰으로 사용자 이메일을 조회한다.
      * */
-    if (requestTokenHeader != null && requestTokenHeader.startsWith(BEARER_PREFIX)) {
-      jwtToken = requestTokenHeader.substring(BEARER_PREFIX.length());
+    if (requestTokenHeader != null && requestTokenHeader.startsWith(bearPreFix)) {
+      jwtToken = requestTokenHeader.substring(bearPreFix.length());
 
       log.info("전체 헤더" + requestTokenHeader);
       log.info("jwt token : " + jwtToken);
