@@ -52,7 +52,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     httpSecurity.cors().disable() //CORS 정책 해제
                 .csrf().disable()
                 .formLogin().disable() // Spring 시큐리시 사용하면 디폴트로 나오는 로그인 폼 사용 해제
-                .authorizeRequests().antMatchers("/api/users/authenticate", "/api/users/signup")
+                .authorizeRequests().antMatchers(
+                    "/api/users/authenticate", "/api/users/signup", "/docs/index.html"
+                )
                 .permitAll()
                 .anyRequest().authenticated().and() //위 2개의 URI 제외하고 모두 인증 필요.
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
