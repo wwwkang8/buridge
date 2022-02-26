@@ -9,9 +9,9 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
 import static org.springframework.restdocs.payload.JsonFieldType.STRING;
-import static org.springframework.restdocs.payload.JsonFieldType.BOOLEAN;
 import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
@@ -20,16 +20,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.List;
-
 import com.realestate.service.config.WebSecurityConfig;
 import com.realestate.service.property.CreatePropertyUseCase;
-import com.realestate.service.user.jwt.JwtAuthenticationEntryPoint;
 import com.realestate.service.user.jwt.JwtRequestFilter;
-import com.realestate.service.user.jwt.JwtTokenUtil;
-import com.realestate.service.user.jwt.JwtUserDetailService;
-import com.realestate.service.user.service.PasswordEncoderService;
 import com.realestate.service.web.property.response.CreatePropertyResponse;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,12 +32,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.payload.FieldDescriptor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -50,9 +45,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-@DisplayName("매물 정보")
+@DisplayName("매물 등록 정보")
 @ExtendWith(RestDocumentationExtension.class)
-@WebMvcTest(CreatePropertyRestController.class)
+@WebMvcTest(controllers = CreatePropertyRestController.class, excludeFilters = {
+    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
+        WebSecurityConfig.class,
+        JwtRequestFilter.class
+    })
+})
 @MockBean(JpaMetamodelMappingContext.class)
 @ActiveProfiles("test")
 public class CreatePropertyRestDoc {
@@ -63,30 +63,6 @@ public class CreatePropertyRestDoc {
 
   @MockBean
   CreatePropertyUseCase createPropertyUseCase;
-
-  @MockBean
-  WebSecurityConfig webSecurityConfig;
-
-  @MockBean
-  JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-  @MockBean
-  JwtTokenUtil jwtTokenUtil;
-
-  @MockBean
-  JwtUserDetailService jwtUserDetailService;
-
-  @MockBean
-  JwtRequestFilter jwtRequestFilter;
-
-  @MockBean
-  AuthenticationManager authenticationManager;
-
-  @MockBean
-  PasswordEncoderService passwordEncoderService;
-
-  @MockBean
-  WebSecurityConfiguration webSecurityConfiguration;
 
   @BeforeEach
   void setUp(WebApplicationContext webApplicationContext,

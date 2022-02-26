@@ -18,6 +18,8 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.realestate.service.config.WebSecurityConfig;
+import com.realestate.service.user.jwt.JwtRequestFilter;
 import java.util.List;
 
 import com.realestate.service.property.DeletePropertyUseCase;
@@ -29,6 +31,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
@@ -41,9 +45,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-@DisplayName("매물 정보")
+@DisplayName("매물 삭제 정보")
 @ExtendWith(RestDocumentationExtension.class)
-@WebMvcTest(DeletePropertyRestController.class)
+@WebMvcTest(controllers = DeletePropertyRestController.class, excludeFilters = {
+    @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = {
+        WebSecurityConfig.class,
+        JwtRequestFilter.class
+    })
+})
 @MockBean(JpaMetamodelMappingContext.class)
 @ActiveProfiles("test")
 public class DeletePropertyRestDoc {
