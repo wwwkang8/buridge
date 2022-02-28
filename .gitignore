@@ -12,5 +12,6 @@ src/main/generated
 *.db
 *.iml
 spy.log
+application.yml
 
 
