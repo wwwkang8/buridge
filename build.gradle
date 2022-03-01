@@ -32,6 +32,7 @@ dependencies {
     implementation 'com.sendgrid:sendgrid-java:4.8.3'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 //	runtime "org.mariadb.jdbc:mariadb-java-client"
+    runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly "com.h2database:h2"
 
     testRuntimeOnly "com.h2database:h2"
