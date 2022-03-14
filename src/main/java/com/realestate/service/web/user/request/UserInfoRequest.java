@@ -17,6 +17,8 @@ public class UserInfoRequest {
   String password;
   int secretCode;
 
+  /** 비밀번호 변경 후 응답객체.
+   * */
   public static UserInfoRequest toUserInfoRequest(User user) {
 
     return UserInfoRequest.builder()
