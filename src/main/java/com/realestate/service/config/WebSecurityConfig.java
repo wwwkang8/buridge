@@ -53,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .formLogin().disable() // Spring 시큐리시 사용하면 디폴트로 나오는 로그인 폼 사용 해제
                 .authorizeRequests().antMatchers(
-                    "/api/users/authenticate", "/api/users/signup", "/docs/index.html"
+                    "/api/users/authenticate", "/api/users/signup", "/api/users/password/change","/docs/index.html"
                 )
                 .permitAll()
                 .anyRequest().authenticated().and() //위 2개의 URI 제외하고 모두 인증 필요.

@@ -1,5 +1,6 @@
 package com.realestate.service.web.user;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -14,7 +15,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
+
 import com.realestate.service.config.WebSecurityConfig;
+import com.realestate.service.user.entity.User;
+import com.realestate.service.user.exception.UserNotFoundException;
 import com.realestate.service.user.jwt.JwtAuthenticationEntryPoint;
 import com.realestate.service.user.jwt.JwtRequestFilter;
 import com.realestate.service.user.jwt.JwtTokenUtil;
@@ -22,6 +27,7 @@ import com.realestate.service.user.jwt.JwtUserDetailService;
 import com.realestate.service.user.service.PasswordEncoderService;
 import com.realestate.service.user.service.UserService;
 import com.realestate.service.web.user.response.SignupUserResponse;
+import com.realestate.service.web.user.response.UserInfoResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -229,6 +235,70 @@ public class UserRestDoc {
             )
             )
         );
+  }
+
+  @Test
+  @DisplayName("비밀번호 변경")
+  void changePassword() throws Exception {
+
+//    // User 엔티티 생성
+//    var user = userMockHelper.createUser();
+//
+//    // UserInfoDto 생성
+//    var userInfoDto = userMockHelper.createUserInfoDto(user);
+//
+//    // UserInfoRequest 생성
+//    var userInfoRequest = userMockHelper.createUserInfoRequest();
+//
+//    // UserInfoResponse 생성
+//    var userInfoResponse = new UserInfoResponse(user.getEmail(), user.getEmail());
+//
+//
+//    //given
+//    given(userService.findUserByEmail(userInfoDto.getEmail())).willReturn(user);
+//    given(userService.generateSecretCode(userInfoDto)).willReturn(123123);
+//    //given(userService.changePassword(userInfoDto)).willReturn(user);
+//
+//
+//
+//    /**
+//     * when
+//     * post : /api/users/password/change URL 호출
+//     * content : JSON으로 된 입력 내용 받는다.
+//     * contentType : 입력값의 타입
+//     * */
+//    ResultActions resultActions = mockMvc.perform(
+//        post("/api/users/password/change/")
+//            .content(userMockHelper.getUserInfoRequest())
+//            .contentType(APPLICATION_JSON)
+//            .accept(APPLICATION_JSON)
+//    );
+//
+//    /**
+//     * then
+//     * RestDoc 참고링크 : https://techblog.woowahan.com/2597/
+//     * 참고링크 2 : https://jaehun2841.github.io/2019/08/04/2019-08-04-spring-rest-docs/#spring-rest-docs-architecture
+//     * */
+//    resultActions.andExpect(status().isOk())
+//        .andDo(document("user/password/change",
+//            preprocessRequest(prettyPrint()),
+//            preprocessResponse(prettyPrint()),
+//            requestFields(
+//                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+//                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
+//                fieldWithPath("secretCode").type(JsonFieldType.STRING).description("인증코드")
+//            ),
+//            responseFields(
+//                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+//                fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
+//                fieldWithPath("data.result").type(JsonFieldType.STRING).description("데이터")
+//            )
+//            )
+//        );
+
+
+
+
 
 
   }
