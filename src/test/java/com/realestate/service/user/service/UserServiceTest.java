@@ -131,8 +131,9 @@ public class UserServiceTest {
 
         //given : 시크릿코드가 생성된 User 객체를 가져온다.
         String beforeChangePassword = passwordEncoder.encode(givenPassword);
+        String afterChangePassword = passwordEncoder.encode(givenNewPassword);
 
-        User beforePasswordChange = User.builder()
+        User beforePasswordChangeUser = User.builder()
                         .email(givenEmail)
                         .password(beforeChangePassword)
                         .nickName(givenNickName)
@@ -141,12 +142,24 @@ public class UserServiceTest {
                         .role(Role.NORMAL)
                         .build();
 
+        User afterPasswordChangeUser = User.builder()
+            .email(givenEmail)
+            .password(afterChangePassword)
+            .nickName(givenNickName)
+            .validationCode(givenValidationCode)
+            .status(Status.ACTIVE)
+            .role(Role.NORMAL)
+            .build();
+
+
+
         // given1 : userRepository에서 미리 만든 optional user 객체로 반환받도록 하게함.
-        given(userRepository.findUserByEmail(any())).willReturn(java.util.Optional.ofNullable(beforePasswordChange));
+        given(userRepository.findUserByEmail(any())).willReturn(java.util.Optional.ofNullable(beforePasswordChangeUser));
+        given(userRepository.save(any())).willReturn(afterPasswordChangeUser);
 
 
         //when : 비밀번호 변경
-        UserInfoDto userInfoDto = new UserInfoDto(beforePasswordChange.getEmail(), givenNewPassword, beforePasswordChange.getValidationCode());
+        UserInfoDto userInfoDto = new UserInfoDto(beforePasswordChangeUser.getEmail(), givenNewPassword, beforePasswordChangeUser.getValidationCode());
         User afterPasswordChange = userService.changePassword(userInfoDto);
 
 

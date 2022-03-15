@@ -13,9 +13,9 @@ import lombok.Setter;
 @Builder
 public class UserInfoRequest {
 
-  String email;
-  String password;
-  int secretCode;
+  private String email;
+  private String password;
+  private int secretCode;
 
   /** 비밀번호 변경 후 응답객체.
    * */

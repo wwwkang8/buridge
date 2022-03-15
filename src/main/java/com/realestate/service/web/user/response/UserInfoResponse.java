@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserInfoResponse {
 
-  String email;
-  String result;
+  private String email;
+  private String result;
 
   /**
    * 비밀번호 변경 응답 클래스 : 비밀번호 변경 후 완료 메시지 응답.
