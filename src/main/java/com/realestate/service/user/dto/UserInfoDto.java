@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserEmailDto {
+public class UserInfoDto {
 
   @NotBlank(message = "이메일 입력은 필수입니다.")
   @Email(message = "이메일 형식이 올바르지 않습니다.")
@@ -20,8 +20,10 @@ public class UserEmailDto {
 
   private String password;
 
+  private int secretCode;
 
-  public UserEmailDto(String email) {
+
+  public UserInfoDto(String email) {
     this.email = email;
   }
 

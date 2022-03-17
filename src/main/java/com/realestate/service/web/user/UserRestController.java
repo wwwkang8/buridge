@@ -2,7 +2,7 @@ package com.realestate.service.web.user;
 
 import javax.validation.Valid;
 
-import com.realestate.service.user.dto.UserEmailDto;
+import com.realestate.service.user.dto.UserInfoDto;
 import com.realestate.service.user.dto.UserSignupDto;
 import com.realestate.service.user.entity.User;
 import com.realestate.service.user.jwt.JwtRequest;
@@ -11,6 +11,7 @@ import com.realestate.service.user.jwt.JwtTokenUtil;
 import com.realestate.service.user.jwt.JwtUserDetailService;
 import com.realestate.service.user.service.UserService;
 import com.realestate.service.web.user.response.SignupUserResponse;
+import com.realestate.service.web.user.response.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,11 +55,23 @@ public class UserRestController {
    * 인증코드 발행 및 이메일 전송 : 비밀번호 변경을 위한 인증코드 발행 및 이메일 전송
    * */
   @PostMapping(value = "/password/validation")
-  public void sendValidationCode(@RequestBody @Valid UserEmailDto userEmailDto) {
+  public void sendValidationCode(@RequestBody @Valid UserInfoDto userInfoDto) {
 
-    userService.sendValidationCode(userEmailDto);
+    userService.sendValidationCode(userInfoDto);
 
   }
+
+  /**
+   * 비밀번호 변경 : 비밀번호를 변경한다.
+   * */
+  @PostMapping(value = "/password/change")
+  public UserInfoResponse changePassword(@RequestBody @Valid UserInfoDto userInfoDto) {
+
+    User user = userService.changePassword(userInfoDto);
+
+    return UserInfoResponse.toUserInfoResponse(user);
+  }
+
 
   /**.
    * 로그인 : JWT 토큰을 발행하여 리턴한다.
@@ -89,8 +102,6 @@ public class UserRestController {
       throw new Exception("INVALID_CREDENTIALS", e);
     }
   }
-
-
 
 
 }

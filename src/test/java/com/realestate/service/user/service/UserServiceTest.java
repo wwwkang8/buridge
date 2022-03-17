@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
-import com.realestate.service.user.dto.UserEmailDto;
+import com.realestate.service.user.dto.UserInfoDto;
 import com.realestate.service.user.dto.UserSignupDto;
 import com.realestate.service.user.entity.User;
 import com.realestate.service.user.repository.UserRepository;
@@ -47,6 +47,8 @@ public class UserServiceTest {
   static final String givenEmail = "test@gmail.com";
   static final String givenPassword = "helloworldTest";
   static final String givenNickName = "swisswatch";
+  static final int givenValidationCode = 564930;
+  static final String givenNewPassword = "byeworldTest";
 
 
   @BeforeEach
@@ -90,15 +92,14 @@ public class UserServiceTest {
 
       }
 
-
     }
 
   }
 
 
   @Nested
-  @DisplayName("비밀번호 변경하는 경우")
-  class changePassword {
+  @DisplayName("새로운 비밀번호 변경하는 경우")
+  class changeNewPassword {
 
       @Test
       @DisplayName("인증코드 6자리 발급한다.")
@@ -109,8 +110,8 @@ public class UserServiceTest {
         given(userRepository.findUserByEmail(any())).willReturn(java.util.Optional.ofNullable(user));
 
         // when : user가 반환되었기 떄문에 "회원정보가 없습니다" 오류가 발생하지 않음. 그리고 secretCode 6개 반환
-        UserEmailDto userEmailDto = new UserEmailDto(givenEmail);
-        int secretCode = userService.generateSecretCode(userEmailDto);
+        UserInfoDto userInfoDto = new UserInfoDto(givenEmail);
+        int secretCode = userService.generateSecretCode(userInfoDto);
         String stringSecretCode = secretCode+"";
 
         log.info("String secretcode : " + secretCode);
@@ -122,6 +123,53 @@ public class UserServiceTest {
       }
 
       // 이메일 전송 후 성공여부 테스트 하기 : scssYn 으로 응답받음.
+
+
+      @Test
+      @DisplayName("비밀번호로 변경")
+      void changePassword() {
+
+        //given : 시크릿코드가 생성된 User 객체를 가져온다.
+        String beforeChangePassword = passwordEncoder.encode(givenPassword);
+        String afterChangePassword = passwordEncoder.encode(givenNewPassword);
+
+        User beforePasswordChangeUser = User.builder()
+                        .email(givenEmail)
+                        .password(beforeChangePassword)
+                        .nickName(givenNickName)
+                        .validationCode(givenValidationCode)
+                        .status(Status.ACTIVE)
+                        .role(Role.NORMAL)
+                        .build();
+
+        User afterPasswordChangeUser = User.builder()
+            .email(givenEmail)
+            .password(afterChangePassword)
+            .nickName(givenNickName)
+            .validationCode(givenValidationCode)
+            .status(Status.ACTIVE)
+            .role(Role.NORMAL)
+            .build();
+
+
+
+        // given1 : userRepository에서 미리 만든 optional user 객체로 반환받도록 하게함.
+        given(userRepository.findUserByEmail(any())).willReturn(java.util.Optional.ofNullable(beforePasswordChangeUser));
+        given(userRepository.save(any())).willReturn(afterPasswordChangeUser);
+
+
+        //when : 비밀번호 변경
+        UserInfoDto userInfoDto = new UserInfoDto(beforePasswordChangeUser.getEmail(), givenNewPassword, beforePasswordChangeUser.getValidationCode());
+        User afterPasswordChange = userService.changePassword(userInfoDto);
+
+
+        //then : 기존 비밀번호와 새로운 비밀번호가 달라야함.
+        assertThat(beforeChangePassword).isNotEqualTo(afterPasswordChange.getPassword());
+
+      }
+
+
+
 
   }
 

@@ -67,5 +67,9 @@ public class User extends BaseDateTimeEntity {
     this.validationCode = secretCode;
   }
 
+  public void updateUserPassword(String password) {
+    this.password = password;
+  }
+
 
 }
