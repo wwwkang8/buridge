@@ -1,7 +1,6 @@
 package com.realestate.service.property;
 
 import com.realestate.service.property.address.entity.PropertyAddressRepository;
-import com.realestate.service.property.dto.CreatePropertyCommand;
 import com.realestate.service.property.entity.Property;
 import com.realestate.service.property.entity.PropertyRepository;
 import com.realestate.service.user.entity.User;

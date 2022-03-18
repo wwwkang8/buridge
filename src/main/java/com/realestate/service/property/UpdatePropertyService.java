@@ -2,7 +2,6 @@ package com.realestate.service.property;
 
 import com.realestate.service.property.address.entity.PropertyAddress;
 import com.realestate.service.property.address.entity.PropertyAddressRepository;
-import com.realestate.service.property.dto.UpdatePropertyCommand;
 import com.realestate.service.property.entity.Property;
 import com.realestate.service.property.entity.PropertyRepository;
 import com.realestate.service.property.exception.PropertyAddressNotFoundException;

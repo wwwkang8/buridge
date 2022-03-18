@@ -1,27 +1,30 @@
-package com.realestate.service.property.dto;
+package com.realestate.service.property;
 
 import java.time.LocalDate;
 
+import com.realestate.service.property.address.entity.PropertyAddress;
 import com.realestate.service.property.constant.ContractType;
 import com.realestate.service.property.constant.ResidentialType;
 import com.realestate.service.property.constant.StructureType;
+import com.realestate.service.property.entity.Property;
 import com.realestate.service.property.entity.PropertyFloor;
 import com.realestate.service.property.entity.PropertyInformation;
 import com.realestate.service.property.entity.PropertyPrice;
+import com.realestate.service.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class UpdatePropertyCommand {
+public class CreatePropertyCommand {
 
   private final long userId;
   private final PropertyInformationCommand propertyInformationCommand;
   private final PropertyAddressCommand propertyAddressCommand;
 
   /**
-   * UpdatePropertyCommand 를 생성하여 리턴합니다.
+   * CreatePropertyCommand 를 생성하여 리턴합니다.
    */
-  public UpdatePropertyCommand(long userId,
+  public CreatePropertyCommand(long userId,
                                PropertyInformationCommand propertyInformationCommand,
                                PropertyAddressCommand propertyAddressCommand) {
     this.userId = userId;
@@ -112,29 +115,54 @@ public class UpdatePropertyCommand {
     }
   }
 
+
   /**
-   * 매물 정보를 생성 후 반환합니다.
+   * 매물 주소 엔티티를 반환합니다.
    */
-  public PropertyInformation createPropertyInformation() {
+  public PropertyAddress toAddressEntity(Property property) {
+    return PropertyAddress.builder()
+        .property(property)
+        .city(propertyAddressCommand.getCity())
+        .address(propertyAddressCommand.getAddress())
+        .roadAddress(propertyAddressCommand.getRoadAddress())
+        .zipcode(propertyAddressCommand.getZipcode())
+        .latitude(propertyAddressCommand.getLatitude())
+        .longitude(propertyAddressCommand.getLongitude())
+        .build();
+  }
+
+  /**
+   * 매물 엔티티를 반환합니다.
+   */
+  public Property toEntity(User user) {
+    return Property.builder()
+        .user(user)
+        .title(propertyInformationCommand.getTitle())
+        .content(propertyInformationCommand.getContent())
+        .propertyInformation(createPropertyInformation())
+        .build();
+  }
+
+  private PropertyInformation createPropertyInformation() {
     return PropertyInformation.builder()
-        .area(propertyInformationCommand.getArea())
+        .propertyPrice(createPropertyPrice())
+        .propertyFloor(createPropertyFloor())
         .structureType(propertyInformationCommand.getStructureType())
         .contractType(propertyInformationCommand.getContractType())
-        .residentialType(propertyInformationCommand.getResidentialType())
         .availableParking(propertyInformationCommand.getAvailableParking())
         .moveInDate(propertyInformationCommand.getMoveInDate())
         .completionDate(propertyInformationCommand.getCompletionDate())
-        .propertyPrice(createPropertyPrice())
-        .propertyFloor(createPropertyFloor())
+        .area(propertyInformationCommand.getArea())
+        .residentialType(propertyInformationCommand.getResidentialType())
         .build();
   }
 
   private PropertyPrice createPropertyPrice() {
     return PropertyPrice.builder()
-        .sellPrice(propertyInformationCommand.getSellPrice())
-        .deposit(propertyInformationCommand.getDeposit())
         .adminPrice(propertyInformationCommand.getAdminPrice())
         .monthlyPrice(propertyInformationCommand.getMonthlyPrice())
+        .deposit(propertyInformationCommand.getDeposit())
+        .sellPrice(propertyInformationCommand.getSellPrice())
         .build();
   }
 
