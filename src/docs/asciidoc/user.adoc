@@ -35,3 +35,15 @@ include::{path}/authenticate/response-fields.adoc[]
 
 === 응답 샘플
 include::{path}/authenticate/http-response.adoc[]
+
+
+== 비밀번호 변경
+
+==== HTTP Request
+include::{path}/password/change/http-request.adoc[]
+
+=== 응답 페이로드
+include::{path}/password/change/response-fields.adoc[]
+
+=== 응답 샘플
+include::{path}/password/change/http-response.adoc[]

@@ -1,5 +1,6 @@
 package com.realestate.service.web.user;
 
+import static com.realestate.service.utils.RestDocFormatGenerator.getDateTimeFormat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -8,7 +9,11 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
+import static org.springframework.restdocs.payload.JsonFieldType.STRING;
+import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -16,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.io.IOException;
+import java.util.List;
 
 import com.realestate.service.config.WebSecurityConfig;
 import com.realestate.service.user.entity.User;
@@ -39,6 +45,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
@@ -241,66 +248,71 @@ public class UserRestDoc {
   @DisplayName("비밀번호 변경")
   void changePassword() throws Exception {
 
-//    // User 엔티티 생성
-//    var user = userMockHelper.createUser();
-//
-//    // UserInfoDto 생성
-//    var userInfoDto = userMockHelper.createUserInfoDto(user);
-//
-//    // UserInfoRequest 생성
-//    var userInfoRequest = userMockHelper.createUserInfoRequest();
-//
-//    // UserInfoResponse 생성
-//    var userInfoResponse = new UserInfoResponse(user.getEmail(), user.getEmail());
-//
-//
-//    //given
-//    given(userService.findUserByEmail(userInfoDto.getEmail())).willReturn(user);
-//    given(userService.generateSecretCode(userInfoDto)).willReturn(123123);
-//    //given(userService.changePassword(userInfoDto)).willReturn(user);
-//
-//
-//
-//    /**
-//     * when
-//     * post : /api/users/password/change URL 호출
-//     * content : JSON으로 된 입력 내용 받는다.
-//     * contentType : 입력값의 타입
-//     * */
-//    ResultActions resultActions = mockMvc.perform(
-//        post("/api/users/password/change/")
-//            .content(userMockHelper.getUserInfoRequest())
-//            .contentType(APPLICATION_JSON)
-//            .accept(APPLICATION_JSON)
-//    );
-//
-//    /**
-//     * then
-//     * RestDoc 참고링크 : https://techblog.woowahan.com/2597/
-//     * 참고링크 2 : https://jaehun2841.github.io/2019/08/04/2019-08-04-spring-rest-docs/#spring-rest-docs-architecture
-//     * */
-//    resultActions.andExpect(status().isOk())
-//        .andDo(document("user/password/change",
-//            preprocessRequest(prettyPrint()),
-//            preprocessResponse(prettyPrint()),
-//            requestFields(
-//                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-//                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
-//                fieldWithPath("secretCode").type(JsonFieldType.STRING).description("인증코드")
-//            ),
-//            responseFields(
-//                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
-//                fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
-//                fieldWithPath("data.result").type(JsonFieldType.STRING).description("데이터")
-//            )
-//            )
-//        );
+    /**
+     * UserInfoResponse.toUserInfoResponse 함수가 static 함수이기 때문에
+     * mockStatic으로 생성 해주어야 한다.
+     * */
+    Mockito.mockStatic(UserInfoResponse.class);
+
+    // User 엔티티 생성
+    var user = userMockHelper.createUser();
+
+    // UserInfoDto 생성
+    var userInfoDto = userMockHelper.createUserInfoDto(user);
+
+    // UserInfoRequest 생성
+    var userInfoRequest = userMockHelper.createUserInfoRequest();
+
+    // UserInfoResponse 생성
+    var userInfoResponse = new UserInfoResponse(user.getEmail(), String.format("%s 회원정보 변경완료", user.getEmail()));
 
 
 
+    //given
+    given(userService.findUserByEmail(userInfoDto.getEmail())).willReturn(user);
+    given(userService.generateSecretCode(userInfoDto)).willReturn(123123);
+    given(userService.changePassword(userInfoDto)).willReturn(user);
+    given(UserInfoResponse.toUserInfoResponse(user)).willReturn(userInfoResponse);
 
 
 
+    /**
+     * when
+     * post : /api/users/password/change URL 호출
+     * content : JSON으로 된 입력 내용 받는다.
+     * contentType : 입력값의 타입
+     * */
+    ResultActions resultActions = mockMvc.perform(
+        post("/api/users/password/change/")
+            .content(userMockHelper.getUserInfoRequest())
+            .contentType(APPLICATION_JSON)
+            .accept(APPLICATION_JSON)
+    );
+
+    /**
+     * then
+     * RestDoc 참고링크 : https://techblog.woowahan.com/2597/
+     * 참고링크 2 : https://jaehun2841.github.io/2019/08/04/2019-08-04-spring-rest-docs/#spring-rest-docs-architecture
+     * */
+    resultActions.andExpect(status().isOk())
+        .andDo(document("user/password/change",
+            preprocessRequest(prettyPrint()),
+            preprocessResponse(prettyPrint()),
+            requestFields(
+                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+                fieldWithPath("password").type(JsonFieldType.STRING).description("비밀번호"),
+                fieldWithPath("secretCode").type(JsonFieldType.NUMBER).description("인증코드")
+            ),
+            responseFields(
+                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
+                fieldWithPath("message").type(JsonFieldType.NULL).description("메시지"),
+                fieldWithPath("data").type(JsonFieldType.NULL).description("데이터"),
+                fieldWithPath("data.email").type(JsonFieldType.STRING).description("이메일").optional(),
+                fieldWithPath("data.result").type(JsonFieldType.STRING).description("결과").optional()
+
+            )
+            )
+        );
   }
 
 
