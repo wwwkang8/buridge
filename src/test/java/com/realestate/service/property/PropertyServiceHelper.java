@@ -5,6 +5,7 @@ import static com.realestate.service.property.constant.ResidentialType.APARTMENT
 import static com.realestate.service.property.constant.StructureType.THREE_ROOM;
 
 import com.realestate.service.property.address.entity.PropertyAddress;
+import com.realestate.service.property.entity.PropertyDataResponse;
 import java.time.LocalDate;
 
 import com.realestate.service.property.entity.Property;
@@ -14,6 +15,10 @@ import com.realestate.service.property.entity.PropertyPrice;
 import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
 import com.realestate.service.user.entity.User;
+import java.util.List;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 
 public class PropertyServiceHelper {
   final String givenEmail = "test123@naver.com";
@@ -33,6 +38,7 @@ public class PropertyServiceHelper {
   final String givenCity = "givenCity";
   final String givenAddress = "givenAddress";
   final String givenRoadAddress = "givenRoadAddress";
+  final String givenZipcode = "011290";
   final double givenLatitude = 126.917885535023d;
   final double givenLongitude = 37.5280674292228d;
 
@@ -79,9 +85,42 @@ public class PropertyServiceHelper {
         .city(givenCity)
         .address(givenAddress)
         .roadAddress(givenRoadAddress)
+        .zipcode(givenZipcode)
         .latitude(givenLatitude)
         .longitude(givenLongitude)
         .build();
+  }
+
+  protected Slice<PropertyDataResponse> getProperties() {
+    List<PropertyDataResponse> contents = List.of(
+        new PropertyDataResponse(
+            1L,
+            1L,
+            givenTitle,
+            givenContent,
+            THREE_ROOM,
+            SALE,
+            APARTMENT,
+            true,
+            givenSellPrice,
+            givenDeposit,
+            givenMonthlyPrice,
+            givenAdminPrice,
+            givenFloor,
+            givenTopFloor,
+            givenCity,
+            givenAddress,
+            givenRoadAddress,
+            givenZipcode,
+            givenLatitude,
+            givenLongitude
+        )
+    );
+    final int givenPage = 1;
+    final int givenPageSize = 10;
+
+    return new SliceImpl<>(contents, PageRequest.of(givenPage, givenPageSize), false);
+
   }
 
 }
