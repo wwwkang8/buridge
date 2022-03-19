@@ -1,6 +1,5 @@
 package com.realestate.service.property;
 
-import com.realestate.service.property.dto.UpdatePropertyCommand;
 import com.realestate.service.property.entity.Property;
 
 /**

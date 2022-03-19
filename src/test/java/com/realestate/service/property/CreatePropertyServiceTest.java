@@ -9,7 +9,6 @@ import com.realestate.service.property.address.entity.PropertyAddressRepository;
 import com.realestate.service.property.constant.ContractType;
 import com.realestate.service.property.constant.ResidentialType;
 import com.realestate.service.property.constant.StructureType;
-import com.realestate.service.property.dto.CreatePropertyCommand;
 import com.realestate.service.property.entity.Property;
 import com.realestate.service.property.entity.PropertyRepository;
 import com.realestate.service.user.repository.UserRepository;

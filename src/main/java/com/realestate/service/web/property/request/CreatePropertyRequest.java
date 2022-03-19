@@ -7,10 +7,10 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.realestate.service.common.time.DatePattern;
+import com.realestate.service.property.CreatePropertyCommand;
 import com.realestate.service.property.constant.ContractType;
 import com.realestate.service.property.constant.ResidentialType;
 import com.realestate.service.property.constant.StructureType;
-import com.realestate.service.property.dto.CreatePropertyCommand;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
