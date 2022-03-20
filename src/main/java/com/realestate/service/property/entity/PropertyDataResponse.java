@@ -15,7 +15,7 @@ public class PropertyDataResponse {
   private final String content;
   private final StructureType structureType;
   private final ContractType contractType;
-  private final ResidentialType residentialtype;
+  private final ResidentialType residentialType;
   private final Boolean availableParking;
   private final Long sellPrice;
   private final Long deposit;
@@ -60,7 +60,7 @@ public class PropertyDataResponse {
     this.content = content;
     this.structureType = structureType;
     this.contractType = contractType;
-    this.residentialtype = residentialtype;
+    this.residentialType = residentialtype;
     this.availableParking = availableParking;
     this.sellPrice = sellPrice;
     this.deposit = deposit;
