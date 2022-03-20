@@ -1,24 +1,15 @@
 package com.realestate.service.property;
 
 import static com.realestate.service.property.constant.ContractType.SALE;
-import static com.realestate.service.property.constant.KeywordType.*;
+import static com.realestate.service.property.constant.KeywordType.TITLE;
 import static com.realestate.service.property.constant.ResidentialType.APARTMENT;
-import static com.realestate.service.property.constant.StructureType.*;
-import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.realestate.service.property.constant.StructureType.THREE_ROOM;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 
-import com.realestate.service.property.address.entity.PropertyAddressRepository;
-import com.realestate.service.property.constant.KeywordType;
-import com.realestate.service.property.constant.StructureType;
-import com.realestate.service.property.dto.FindPropertyQueryDto;
 import com.realestate.service.property.entity.PropertyDataResponse;
 import com.realestate.service.property.entity.PropertyRepository;
-import java.util.List;
-import java.util.Optional;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -27,9 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 
 @DisplayName("FindPropertyService 테스트")
 @ExtendWith(MockitoExtension.class)
@@ -46,10 +35,6 @@ class FindPropertyServiceTest {
 
   @BeforeEach
   void setUp() {
-
-    final var queryDto = FindPropertyQueryDto.builder()
-            .build();
-   propertyRepository.find(queryDto);
     given(propertyRepository.find(any()))
         .willReturn(helper.getProperties());
   }
@@ -98,7 +83,7 @@ class FindPropertyServiceTest {
         assertThat(result.getContent().get(0).getCity()).isEqualTo(givenCity);
         assertThat(result.getContent().get(0).getAddress()).isEqualTo(givenAddress);
         assertThat(result.getContent().get(0).getTitle()).isEqualTo(givenTitle);
-        assertThat(result.getContent().get(0).getResidentialtype()).isEqualTo(APARTMENT);
+        assertThat(result.getContent().get(0).getResidentialType()).isEqualTo(APARTMENT);
         assertThat(result.getContent().get(0).getContractType()).isEqualTo(SALE);
         assertThat(result.getContent().get(0).getStructureType()).isEqualTo(THREE_ROOM);
       }
