@@ -8,6 +8,7 @@ import static org.springframework.util.ResourceUtils.CLASSPATH_URL_PREFIX;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.realestate.service.property.entity.Property;
+import com.realestate.service.property.entity.PropertyDataResponse;
 import com.realestate.service.property.entity.PropertyFloor;
 import com.realestate.service.property.entity.PropertyInformation;
 import com.realestate.service.property.entity.PropertyPrice;
@@ -22,6 +23,10 @@ import com.realestate.service.web.property.response.UpdatePropertyResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.util.ResourceUtils;
 
 public class PropertyMockHelper {
@@ -48,6 +53,12 @@ public class PropertyMockHelper {
   final String givenContent = "createTestContents";
   final String givenUpdatedTitle = "updateTitle";
   final String givenUpdatedContent = "updateContent";
+  final String givenCity = "givenCity";
+  final String givenAddress = "givenAddress";
+  final String givenRoadAddress = "givenRoadAddress";
+  final String givenZipcode = "011290";
+  final double givenLatitude = 126.917885535023d;
+  final double givenLongitude = 37.5280674292228d;
 
   protected User savedUser() {
     return User.createUser(
@@ -182,4 +193,38 @@ public class PropertyMockHelper {
       super(id, deletedDateTime);
     }
   }
+
+  public Slice<PropertyDataResponse> getFindPropertyPageResponse() {
+    List<PropertyDataResponse> contents = List.of(
+        new PropertyDataResponse(
+            1L,
+            1L,
+            givenTitle,
+            givenContent,
+            THREE_ROOM,
+            SALE,
+            APARTMENT,
+            true,
+            givenSellPrice,
+            givenDeposit,
+            givenMonthlyPrice,
+            givenAdminPrice,
+            givenFloor,
+            givenTopFloor,
+            givenCity,
+            givenAddress,
+            givenRoadAddress,
+            givenZipcode,
+            givenLatitude,
+            givenLongitude
+        )
+    );
+    final int givenPage = 1;
+    final int givenPageSize = 10;
+
+    return new SliceImpl<>(contents, PageRequest.of(givenPage, givenPageSize), false);
+  }
+
+
+
 }
