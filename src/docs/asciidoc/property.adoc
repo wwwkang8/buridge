@@ -17,6 +17,21 @@ include::property-enums.adoc[]
 
 :path: {snippets}/properties
 
+== 매물 목록 조회
+
+==== HTTP Request
+include::{path}/find-list/http-request.adoc[]
+
+=== Request Parameters
+include::{path}/find-list//request-parameters.adoc[]
+
+=== 응답 페이로드
+include::{path}/find-list/response-fields-data.adoc[]
+
+=== 응답 샘플
+include::{path}/find-list/http-response.adoc[]
+
+
 == 매물 등록
 
 ==== HTTP Request

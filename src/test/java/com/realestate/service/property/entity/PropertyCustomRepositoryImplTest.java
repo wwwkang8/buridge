@@ -18,7 +18,6 @@ import com.realestate.service.property.image.entity.PropertyImageRepository;
 import com.realestate.service.user.entity.User;
 import com.realestate.service.user.repository.UserRepository;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -294,7 +293,7 @@ class PropertyCustomRepositoryImplTest {
 
           // then
           assertThat(result).isNotNull();
-          assertThat(result.getContent().get(0).getResidentialtype()).isEqualTo(HOUSING);
+          assertThat(result.getContent().get(0).getResidentialType()).isEqualTo(HOUSING);
           assertThat(result.getSize()).isEqualTo(givenPageSize);
           assertThat(result.getContent().size()).isEqualTo(resultContentSize);
         }
@@ -322,7 +321,7 @@ class PropertyCustomRepositoryImplTest {
 
           // then
           assertThat(result).isNotNull();
-          assertThat(result.getContent().get(0).getResidentialtype()).isEqualTo(OFFICE_HOTEL);
+          assertThat(result.getContent().get(0).getResidentialType()).isEqualTo(OFFICE_HOTEL);
           assertThat(result.getSize()).isEqualTo(givenPageSize);
           assertThat(result.getContent().size()).isEqualTo(resultContentSize);
         }
@@ -350,7 +349,7 @@ class PropertyCustomRepositoryImplTest {
 
           // then
           assertThat(result).isNotNull();
-          assertThat(result.getContent().get(0).getResidentialtype()).isEqualTo(APARTMENT);
+          assertThat(result.getContent().get(0).getResidentialType()).isEqualTo(APARTMENT);
           assertThat(result.getSize()).isEqualTo(givenPageSize);
           assertThat(result.getContent().size()).isEqualTo(resultContentSize);
         }
@@ -378,7 +377,7 @@ class PropertyCustomRepositoryImplTest {
 
           // then
           assertThat(result).isNotNull();
-          assertThat(result.getContent().get(0).getResidentialtype()).isEqualTo(OFFICE);
+          assertThat(result.getContent().get(0).getResidentialType()).isEqualTo(OFFICE);
           assertThat(result.getSize()).isEqualTo(givenPageSize);
           assertThat(result.getContent().size()).isEqualTo(resultContentSize);
         }
@@ -406,7 +405,7 @@ class PropertyCustomRepositoryImplTest {
 
           // then
           assertThat(result).isNotNull();
-          assertThat(result.getContent().get(0).getResidentialtype()).isEqualTo(STORE);
+          assertThat(result.getContent().get(0).getResidentialType()).isEqualTo(STORE);
           assertThat(result.getSize()).isEqualTo(givenPageSize);
           assertThat(result.getContent().size()).isEqualTo(resultContentSize);
         }

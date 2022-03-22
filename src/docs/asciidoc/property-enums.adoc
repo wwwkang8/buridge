@@ -59,3 +59,17 @@
 |월세
 |===
 
+[[KeywordType]]
+==== KeywordType
+
+|===
+|필드 값 |설명
+
+|TITLE
+|제목
+
+|CONTENT
+|내용
+
+|===
+
