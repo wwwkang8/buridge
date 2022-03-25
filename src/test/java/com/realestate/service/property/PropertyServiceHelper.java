@@ -6,6 +6,7 @@ import static com.realestate.service.property.constant.StructureType.THREE_ROOM;
 
 import com.realestate.service.property.address.entity.PropertyAddress;
 import com.realestate.service.property.entity.PropertyDataResponse;
+import com.realestate.service.property.entity.PropertyDetailDataResponse;
 import java.time.LocalDate;
 
 import com.realestate.service.property.entity.Property;
@@ -15,7 +16,9 @@ import com.realestate.service.property.entity.PropertyPrice;
 import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
 import com.realestate.service.user.entity.User;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -121,6 +124,40 @@ public class PropertyServiceHelper {
 
     return new SliceImpl<>(contents, PageRequest.of(givenPage, givenPageSize), false);
 
+  }
+
+  Optional<PropertyDetailDataResponse> getProperty() {
+    return Optional.of(
+        new PropertyDetailDataResponse(
+            1L,
+            givenEmail,
+            givenNickName,
+            1L,
+            givenTitle,
+            givenContent,
+            200,
+            THREE_ROOM,
+            SALE,
+            APARTMENT,
+            true,
+            LocalDate.now(),
+            LocalDate.now().minusYears(3),
+            givenSellPrice,
+            givenDeposit,
+            givenMonthlyPrice,
+            givenAdminPrice,
+            givenFloor,
+            givenTopFloor,
+            givenCity,
+            givenAddress,
+            givenRoadAddress,
+            givenZipcode,
+            givenLatitude,
+            givenLongitude,
+            LocalDateTime.now(),
+            LocalDateTime.now()
+        )
+    );
   }
 
 }
