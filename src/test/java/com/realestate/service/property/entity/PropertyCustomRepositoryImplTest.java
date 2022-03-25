@@ -46,11 +46,15 @@ class PropertyCustomRepositoryImplTest {
 
   PropertyCustomRepositoryImplHelper helper = new PropertyCustomRepositoryImplHelper();
 
+  long firstPropertyId;
+
   @BeforeEach
   void setUp() {
     User dummyUser = userRepository.save(helper.initUser());
     List<Property> properties = propertyRepository.saveAll(helper.initProperty(dummyUser));
     propertyAddressRepository.saveAll(helper.initAddress(properties));
+
+    firstPropertyId = properties.get(0).getId();
   }
 
   @AfterEach
@@ -63,6 +67,28 @@ class PropertyCustomRepositoryImplTest {
   @Nested
   @DisplayName("find 메서드는")
   class DescribeOf_find {
+
+    @Nested
+    @DisplayName("매물 고유 번호가 주어질 경우")
+    class ContextWith_id {
+
+      @Test
+      @DisplayName("조건에 해당하는 매물 정보를 반환한다.")
+      void it_returns() {
+
+        // given
+        var givenId = firstPropertyId;
+
+        // when
+        PropertyDetailDataResponse result = propertyRepository.find(givenId).get();
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getId()).isEqualTo(givenId);
+        assertThat(result.getNickName()).isEqualTo("givenNickName");
+        assertThat(result.getAddress()).isEqualTo("서울특별시 서대문구 신촌동 806호");
+      }
+    }
 
     @Nested
     @DisplayName("페이징 조건이 주어질 경우")
