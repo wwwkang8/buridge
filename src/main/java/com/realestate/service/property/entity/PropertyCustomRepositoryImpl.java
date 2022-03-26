@@ -1,6 +1,7 @@
 package com.realestate.service.property.entity;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -28,6 +29,53 @@ public class PropertyCustomRepositoryImpl implements PropertyCustomRepository {
   private static final int FIRST_INDEX = 0;
 
   @Override
+  public Optional<PropertyDetailDataResponse> find(long id) {
+    return Optional.ofNullable(
+        queryFactory
+            .select(
+                new QPropertyDetailDataResponse(
+                    user.id,
+                    user.email,
+                    user.nickName,
+                    property.id,
+                    property.title,
+                    property.content,
+                    property.propertyInformation.area,
+                    property.propertyInformation.structureType,
+                    property.propertyInformation.contractType,
+                    property.propertyInformation.residentialType,
+                    property.propertyInformation.availableParking,
+                    property.propertyInformation.moveInDate,
+                    property.propertyInformation.completionDate,
+                    property.propertyInformation.propertyPrice.sellPrice,
+                    property.propertyInformation.propertyPrice.deposit,
+                    property.propertyInformation.propertyPrice.monthlyPrice,
+                    property.propertyInformation.propertyPrice.adminPrice,
+                    property.propertyInformation.propertyFloor.floor,
+                    property.propertyInformation.propertyFloor.topFloor,
+                    propertyAddress.city,
+                    propertyAddress.address,
+                    propertyAddress.roadAddress,
+                    propertyAddress.zipcode,
+                    propertyAddress.latitude,
+                    propertyAddress.longitude,
+                    property.createdDateTime,
+                    property.modifiedDateTime
+                )
+            )
+            .from(property)
+            .join(property.user, user)
+            .join(propertyAddress)
+            .on(property.id.eq(propertyAddress.property.id))
+            .where(
+                property.id.eq(id),
+                property.deletedDateTime.isNull()
+            )
+            .fetchFirst()
+    );
+  }
+
+  @Override
   public Slice<PropertyDataResponse> find(FindPropertyQueryDto queryDto) {
     final var page = queryDto.createPageRequest();
     boolean hasNext = false;
@@ -41,6 +89,7 @@ public class PropertyCustomRepositoryImpl implements PropertyCustomRepository {
 
     return new SliceImpl<>(properties, page, hasNext);
   }
+
 
   private List<PropertyDataResponse> getPropertyQueryResult(FindPropertyQueryDto queryDto,
                                                             PageRequest page) {
