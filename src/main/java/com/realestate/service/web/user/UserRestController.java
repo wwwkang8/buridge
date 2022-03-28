@@ -9,7 +9,9 @@ import com.realestate.service.user.jwt.JwtRequest;
 import com.realestate.service.user.jwt.JwtResponse;
 import com.realestate.service.user.jwt.JwtTokenUtil;
 import com.realestate.service.user.jwt.JwtUserDetailService;
+import com.realestate.service.user.service.CurrentUser;
 import com.realestate.service.user.service.UserService;
+import com.realestate.service.web.user.response.CurrentUserResponse;
 import com.realestate.service.web.user.response.SignupUserResponse;
 import com.realestate.service.web.user.response.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -101,6 +104,20 @@ public class UserRestController {
     } catch (BadCredentialsException e) {
       throw new Exception("INVALID_CREDENTIALS", e);
     }
+  }
+
+
+  /** LoginUser 어노테이션.
+   * 로그인한 사용자 정보를 불러오는 어노테이션
+   * */
+  @GetMapping(value = "/currentUser")
+  public CurrentUserResponse loginUser(@CurrentUser User currentUser) {
+
+    log.info("currentUser ID : " + currentUser.getId());
+    log.info("currentUser Email : " + currentUser.getEmail());
+    log.info("currentUser NickName : " + currentUser.getNickName());
+
+    return CurrentUserResponse.toCurrentUserResponse(currentUser);
   }
 
 
