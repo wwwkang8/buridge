@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.realestate.service.property.entity.Property;
 import com.realestate.service.property.entity.PropertyDataResponse;
+import com.realestate.service.property.entity.PropertyDetailDataResponse;
 import com.realestate.service.property.entity.PropertyFloor;
 import com.realestate.service.property.entity.PropertyInformation;
 import com.realestate.service.property.entity.PropertyPrice;
@@ -225,6 +226,37 @@ public class PropertyMockHelper {
     return new SliceImpl<>(contents, PageRequest.of(givenPage, givenPageSize), false);
   }
 
+  public PropertyDetailDataResponse getFindPropertyResponse() {
+    return new PropertyDetailDataResponse(
+        1L,
+        givenEmail,
+        givenNickName,
+        1L,
+        givenTitle,
+        givenContent,
+        200,
+        THREE_ROOM,
+        SALE,
+        APARTMENT,
+        true,
+        LocalDate.now(),
+        LocalDate.now().minusYears(3),
+        givenSellPrice,
+        givenDeposit,
+        givenMonthlyPrice,
+        givenAdminPrice,
+        givenFloor,
+        givenTopFloor,
+        givenCity,
+        givenAddress,
+        givenRoadAddress,
+        givenZipcode,
+        givenLatitude,
+        givenLongitude,
+        LocalDateTime.now(),
+        LocalDateTime.now()
+    );
+  }
 
 
 }

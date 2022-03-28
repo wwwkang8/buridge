@@ -1,6 +1,7 @@
 package com.realestate.service.web.property;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -74,6 +75,60 @@ public class FindPropertyRestDoc {
         .addFilters(new CharacterEncodingFilter("UTF-8", true))
         .build();
 
+  }
+
+  @Test
+  @DisplayName("매물 상세 조회 API")
+  void findOne() throws Exception {
+    given(findPropertyUseCase.find(anyLong()))
+        .willReturn(helper.getFindPropertyResponse());
+
+    final ResultActions resultActions = mockMvc.perform(
+        get("/api/properties/{id}", 1L));
+
+    resultActions
+        .andExpect(status().isOk())
+        .andDo(
+            document("properties/{method-name}",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint()),
+                responseFields(
+                    beneathPath("data").withSubsectionId("data"),
+                    getFieldDescriptors()
+                )
+            ));
+  }
+
+  private List<FieldDescriptor> getFieldDescriptors() {
+    return List.of(
+        fieldWithPath("userNumber").type(NUMBER).description("작성자 고유번호"),
+        fieldWithPath("userEmail").type(STRING).description("작성자 이메일"),
+        fieldWithPath("nickName").type(STRING).description("작성자 닉네임"),
+        fieldWithPath("id").type(NUMBER).description("매물 고유번호"),
+        fieldWithPath("title").type(STRING).description("제목"),
+        fieldWithPath("content").type(STRING).description("내용"),
+        fieldWithPath("area").type(NUMBER).description("면적"),
+        fieldWithPath("structureType").type(STRING).description("매물 구조 타입 <<StructureType>>"),
+        fieldWithPath("contractType").type(STRING).description("계약 타입 <<ContractType>>"),
+        fieldWithPath("residentialType").type(STRING).description("거주 타입 <<ResidentialType>>"),
+        fieldWithPath("availableParking").type(BOOLEAN).description("주차 가능 여부"),
+        fieldWithPath("moveInDate").type(STRING).description("입주 가능 일자"),
+        fieldWithPath("completionDate").type(STRING).description("준공 일자"),
+        fieldWithPath("sellPrice").type(NUMBER).description("매매 금액").optional(),
+        fieldWithPath("deposit").type(NUMBER).description("보증금").optional(),
+        fieldWithPath("monthlyPrice").type(NUMBER).description("월세").optional(),
+        fieldWithPath("adminPrice").type(NUMBER).description("관리비").optional(),
+        fieldWithPath("floor").type(NUMBER).description("층"),
+        fieldWithPath("topFloor").type(NUMBER).description("최고 층"),
+        fieldWithPath("city").type(STRING).description("도시"),
+        fieldWithPath("address").type(STRING).description("주소"),
+        fieldWithPath("roadAddress").type(STRING).description("도로명 주소"),
+        fieldWithPath("zipcode").type(STRING).description("우편 번호"),
+        fieldWithPath("latitude").type(NUMBER).description("위도"),
+        fieldWithPath("longitude").type(NUMBER).description("경도"),
+        fieldWithPath("createdDateTime").type(STRING).description("생성 일시"),
+        fieldWithPath("modifiedDateTime").type(STRING).description("수정 일시")
+    );
   }
 
   @Test
