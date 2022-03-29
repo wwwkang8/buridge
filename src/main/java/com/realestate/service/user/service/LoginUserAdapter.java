@@ -2,11 +2,14 @@ package com.realestate.service.user.service;
 
 import java.util.ArrayList;
 
+import com.realestate.service.user.dto.LoginUserDto;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.User;
 
 @Getter
-public class CurrentUserAdapter extends User {
+@Slf4j
+public class LoginUserAdapter extends User {
 
   /**
    * 참고문서 : https://jaimemin.tistory.com/2078?category=1068792
@@ -16,11 +19,11 @@ public class CurrentUserAdapter extends User {
    * User 엔티티 정보를 추가하여 아이디, 이메일, 닉네임도 조회할 수 있도록 함.
    * */
 
-  private com.realestate.service.user.entity.User currentUser;
+  private LoginUserDto loginUserDto;
 
-  public CurrentUserAdapter(com.realestate.service.user.entity.User user) {
-    super(user.getEmail(), user.getPassword(), new ArrayList<>());
-    this.currentUser = user;
+  public LoginUserAdapter(LoginUserDto loginUserDto) {
+    super(loginUserDto.getEmail(), loginUserDto.getPassword(), new ArrayList<>());
+    this.loginUserDto = loginUserDto;
   }
 
 }
