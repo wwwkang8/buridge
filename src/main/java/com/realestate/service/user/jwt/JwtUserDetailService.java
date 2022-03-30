@@ -1,11 +1,9 @@
 package com.realestate.service.user.jwt;
 
-import java.util.ArrayList;
-import java.util.Optional;
-
+import com.realestate.service.user.dto.LoginUserDto;
+import com.realestate.service.user.service.LoginUserAdapter;
 import com.realestate.service.user.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,9 +22,19 @@ public class JwtUserDetailService implements UserDetailsService {
     // User 엔티티를 사용하여 이메일로 유저 정보를 조회.
     com.realestate.service.user.entity.User findUser = userService.findUserByEmail(email);
 
-    // 스프링에서 제공하는 User 객체 생성.
+    // 현재 로그인한 사용자를 LoginUserDto로 생성하여 리턴
     if (findUser.getEmail().equals(email)) {
-      return new User(findUser.getEmail(), findUser.getPassword(), new ArrayList<>());
+      LoginUserDto loginUserDto = LoginUserDto.builder()
+                                                    .id(findUser.getId())
+                                                    .email(findUser.getEmail())
+                                                    .password(findUser.getPassword())
+                                                    .nickName(findUser.getNickName())
+                                                    .status(findUser.getStatus())
+                                                    .role(findUser.getRole())
+                                                    .build();
+
+      // UserDetailService에서 반환하는 객체는 UserDetail 타입이어야 한다.
+      return new LoginUserAdapter(loginUserDto);
     } else {
       throw new UsernameNotFoundException("User not found with email: " + email);
     }

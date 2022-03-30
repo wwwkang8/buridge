@@ -2,6 +2,7 @@ package com.realestate.service.web.user;
 
 import javax.validation.Valid;
 
+import com.realestate.service.user.dto.LoginUserDto;
 import com.realestate.service.user.dto.UserInfoDto;
 import com.realestate.service.user.dto.UserSignupDto;
 import com.realestate.service.user.entity.User;
@@ -9,7 +10,9 @@ import com.realestate.service.user.jwt.JwtRequest;
 import com.realestate.service.user.jwt.JwtResponse;
 import com.realestate.service.user.jwt.JwtTokenUtil;
 import com.realestate.service.user.jwt.JwtUserDetailService;
+import com.realestate.service.user.service.LoginUser;
 import com.realestate.service.user.service.UserService;
+import com.realestate.service.web.user.response.LoginUserResponse;
 import com.realestate.service.web.user.response.SignupUserResponse;
 import com.realestate.service.web.user.response.UserInfoResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -1,6 +1,5 @@
 package com.realestate.service.web.user;
 
-import static com.realestate.service.utils.RestDocFormatGenerator.getDateTimeFormat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -9,29 +8,25 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.JsonFieldType.NUMBER;
-import static org.springframework.restdocs.payload.JsonFieldType.STRING;
-import static org.springframework.restdocs.payload.PayloadDocumentation.beneathPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.subsectionWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
-import java.util.List;
+import java.lang.annotation.Annotation;
 
 import com.realestate.service.config.WebSecurityConfig;
-import com.realestate.service.user.entity.User;
-import com.realestate.service.user.exception.UserNotFoundException;
 import com.realestate.service.user.jwt.JwtAuthenticationEntryPoint;
 import com.realestate.service.user.jwt.JwtRequestFilter;
 import com.realestate.service.user.jwt.JwtTokenUtil;
 import com.realestate.service.user.jwt.JwtUserDetailService;
+import com.realestate.service.user.service.LoginUser;
 import com.realestate.service.user.service.PasswordEncoderService;
 import com.realestate.service.user.service.UserService;
+import com.realestate.service.web.user.response.LoginUserResponse;
 import com.realestate.service.web.user.response.SignupUserResponse;
 import com.realestate.service.web.user.response.UserInfoResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,7 +40,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
-import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
@@ -314,6 +308,4 @@ public class UserRestDoc {
             )
         );
   }
-
-
 }

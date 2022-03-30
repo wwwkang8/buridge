@@ -8,15 +8,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.realestate.service.user.constant.Role;
 import com.realestate.service.user.constant.Status;
+import com.realestate.service.user.dto.LoginUserDto;
 import com.realestate.service.user.dto.UserInfoDto;
 import com.realestate.service.user.dto.UserSignupDto;
 import com.realestate.service.user.entity.User;
 import com.realestate.service.user.jwt.JwtRequest;
 import com.realestate.service.user.jwt.JwtResponse;
+import com.realestate.service.user.service.LoginUserAdapter;
 import com.realestate.service.web.user.request.SignupUserRequest;
 import com.realestate.service.web.user.request.UserInfoRequest;
+import com.realestate.service.web.user.response.LoginUserResponse;
 import com.realestate.service.web.user.response.SignupUserResponse;
-import com.realestate.service.web.user.response.UserInfoResponse;
 import org.springframework.util.ResourceUtils;
 
 public class UserMockHelper {
@@ -28,6 +30,7 @@ public class UserMockHelper {
     objectMapper.registerModule(new JavaTimeModule());
   }
 
+  final long   givenId = 1L;
   final String givenEmail = "helloworld@gmail.com";
   final String givenPassword = "12341234";
   final String changePassword = "thisispassord";
@@ -76,12 +79,30 @@ public class UserMockHelper {
    * */
   protected User createUser() {
     return User.builder()
+        .id(givenId)
         .email(givenEmail)
         .nickName(givenNickName)
         .status(Status.ACTIVE)
         .role(Role.NORMAL)
         .validationCode(givenSecretCode)
         .build();
+  }
+
+  /**
+   * 용도 : CurrentUserAdapter 객체 생성을 위한 함수
+   * 접근제어자 : UserMockHelper는 동일 패키지 내에서 UserRestDoc에서만 호출할 수 있도록 protected로 설정.
+   * */
+  protected LoginUserAdapter createCurrentUserAdapter() {
+    LoginUserDto loginUserDto = LoginUserDto.builder()
+        .id(givenId)
+        .email(givenEmail)
+        .password(givenPassword)
+        .nickName(givenNickName)
+        .status(Status.ACTIVE)
+        .role(Role.NORMAL)
+        .build();
+
+    return new LoginUserAdapter(loginUserDto);
   }
 
   /**
@@ -117,6 +138,16 @@ public class UserMockHelper {
   protected  SignupUserResponse createSignupUserResponse() {
 
     return new SignupUserResponse(givenEmail, givenNickName, Status.ACTIVE.toString(), Role.NORMAL.toString());
+
+  }
+
+  /**
+   * 용도 : currentUser 함수 실행 후, 컨트롤러에서 응답하는 객체를 생성하기 위함
+   * 접근제어자 : UserMockHelper는 동일 패키지 내에서 UserRestDoc에서만 호출할 수 있도록 protected로 설정.
+   * */
+  protected LoginUserResponse createLoginUserResponse() {
+
+    return new LoginUserResponse(givenId, givenEmail, givenNickName, Status.ACTIVE, Role.NORMAL);
 
   }
 
